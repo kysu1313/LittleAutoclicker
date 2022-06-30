@@ -38,9 +38,10 @@
             this.addRowBtn = new System.Windows.Forms.Button();
             this.positionList = new System.Windows.Forms.ListBox();
             this.randomizeDelays = new System.Windows.Forms.CheckBox();
-            this.rangePercentDropdown = new System.Windows.Forms.ComboBox();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.checkBox2 = new System.Windows.Forms.CheckBox();
+            this.rangePercentDropdown = new System.Windows.Forms.ComboBox();
+            this.button2 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // checkBox1
@@ -137,21 +138,6 @@
             this.randomizeDelays.Text = "Randomize Delays";
             this.randomizeDelays.UseVisualStyleBackColor = true;
             // 
-            // rangePercentDropdown
-            // 
-            this.rangePercentDropdown.FormattingEnabled = true;
-            this.rangePercentDropdown.Items.AddRange(new object[] {
-            "1%",
-            "5%",
-            "10%",
-            "25%",
-            "50%",
-            "100%"});
-            this.rangePercentDropdown.Location = new System.Drawing.Point(186, 175);
-            this.rangePercentDropdown.Name = "rangePercentDropdown";
-            this.rangePercentDropdown.Size = new System.Drawing.Size(61, 21);
-            this.rangePercentDropdown.TabIndex = 10;
-            // 
             // comboBox1
             // 
             this.comboBox1.FormattingEnabled = true;
@@ -177,11 +163,38 @@
             this.checkBox2.Text = "Randomize Positions";
             this.checkBox2.UseVisualStyleBackColor = true;
             // 
+            // rangePercentDropdown
+            // 
+            this.rangePercentDropdown.FormattingEnabled = true;
+            this.rangePercentDropdown.Items.AddRange(new object[] {
+            "1",
+            "5",
+            "10",
+            "25",
+            "50",
+            "100"});
+            this.rangePercentDropdown.Location = new System.Drawing.Point(186, 175);
+            this.rangePercentDropdown.Name = "rangePercentDropdown";
+            this.rangePercentDropdown.Size = new System.Drawing.Size(61, 21);
+            this.rangePercentDropdown.TabIndex = 10;
+            // 
+            // button2
+            // 
+            this.button2.AccessibleDescription = "Remove selected item";
+            this.button2.Location = new System.Drawing.Point(454, 94);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(37, 34);
+            this.button2.TabIndex = 13;
+            this.button2.Text = "X";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(622, 450);
+            this.Controls.Add(this.button2);
             this.Controls.Add(this.comboBox1);
             this.Controls.Add(this.checkBox2);
             this.Controls.Add(this.rangePercentDropdown);
@@ -214,9 +227,10 @@
         private System.Windows.Forms.Button addRowBtn;
         private System.Windows.Forms.ListBox positionList;
         private System.Windows.Forms.CheckBox randomizeDelays;
-        private System.Windows.Forms.ComboBox rangePercentDropdown;
         private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.CheckBox checkBox2;
+        private System.Windows.Forms.ComboBox rangePercentDropdown;
+        private System.Windows.Forms.Button button2;
     }
 }
 

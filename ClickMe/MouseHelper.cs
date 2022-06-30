@@ -12,6 +12,22 @@ namespace ClickMe
 
     class MouseHelper
     {
+        [DllImport("User32.Dll")]
+        public static extern bool ClientToScreen(IntPtr hWnd, ref POINT point);
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct POINT
+        {
+            public int x;
+            public int y;
+
+            public POINT(int X, int Y)
+            {
+                x = X;
+                y = Y;
+            }
+        }
+
         [DllImport("user32.dll")]
         public static extern short GetAsyncKeyState(Keys vKey);
 
@@ -72,5 +88,29 @@ namespace ClickMe
         {
             mouse_event(MOUSEEVENTF_LEFTDOWN | MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
         }
+
+        //public static void LinearSmoothMove(Point newPosition, int steps)
+        //{
+        //    Point start = GetCursorPosition();
+        //    PointF iterPoint = start;
+
+        //    // Find the slope of the line segment defined by start and newPosition
+        //    PointF slope = new PointF(newPosition.X - start.X, newPosition.Y - start.Y);
+
+        //    // Divide by the number of steps
+        //    slope.X = slope.X / steps;
+        //    slope.Y = slope.Y / steps;
+
+        //    // Move the mouse to each iterative point.
+        //    for (int i = 0; i < steps; i++)
+        //    {
+        //        iterPoint = new PointF(iterPoint.X + slope.X, iterPoint.Y + slope.Y);
+        //        SetCursorPosition(Point.Round(iterPoint));
+        //        Thread.Sleep(MouseEventDelayMS);
+        //    }
+
+        //    // Move the mouse to the final destination.
+        //    SetCursorPosition(newPosition);
+        //}
     }
 }
