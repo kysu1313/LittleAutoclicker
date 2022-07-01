@@ -10,6 +10,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Input;
+using WindowsInput;
+using WindowsInput.Native;
 
 namespace ClickMe
 {
@@ -23,9 +25,11 @@ namespace ClickMe
         public bool click = false;
         public int parsedValue = 1;
         public PositionHelper positionHelper = new PositionHelper();
+        private InputSimulator inputSimulator;
 
         public Form1()
         {
+            inputSimulator = new InputSimulator();
             InitializeComponent();
         }
 
@@ -49,7 +53,6 @@ namespace ClickMe
             {
                 if (checkBox1.Checked && click)
                 {
-                    //MouseHelper.DoMouseClick();
                     executeClick(PositionHelper.positions[currIndex]);
                 }
             }
@@ -64,7 +67,41 @@ namespace ClickMe
             MouseHelper.POINT p = new MouseHelper.POINT(xp, yp);
             MouseHelper.ClientToScreen(Handle, ref p);
             MouseHelper.SetCursorPos(getRandInt(xp), getRandInt(yp));
-            MouseHelper.DoMouseClick();
+
+            //inputSimulator.Mouse.MoveMouseTo(getRandInt(xp), getRandInt(yp));
+
+            if (mousePosition.useModifier)
+            {
+                inputSimulator.Keyboard.KeyDown((VirtualKeyCode)mousePosition.modifier);
+            }
+
+            if (mousePosition.isDoubleClick)
+            {
+                if (mousePosition.isRightClick)
+                {
+                    inputSimulator.Mouse.RightButtonDoubleClick();
+                }
+                else
+                {
+                    inputSimulator.Mouse.LeftButtonDoubleClick();
+                }
+            }
+            else
+            {
+                if (mousePosition.isRightClick)
+                {
+                    inputSimulator.Mouse.RightButtonClick();
+                }
+                else
+                {
+                    inputSimulator.Mouse.LeftButtonClick();
+                }
+            }
+
+            if (mousePosition.useModifier)
+            {
+                inputSimulator.Keyboard.KeyUp((VirtualKeyCode)mousePosition.modifier);
+            }
 
             ++currIndex;
             if (currIndex >= PositionHelper.positions.Count)
@@ -78,25 +115,16 @@ namespace ClickMe
 
         private int getRandInt(int pt)
         {
-            if (randomizeDelays.Checked)
+            if (randomizePositions.Checked)
             {
                 int seed = 10;
-                if (!String.IsNullOrEmpty(rangePercentDropdown.SelectedItem.ToString()))
+                if (positionModifier.Value > 0)
                 {
-                    int.TryParse(rangePercentDropdown.SelectedItem.ToString(), out seed);
+                    seed = Decimal.ToInt32(positionModifier.Value);
                 }
                 Random rnd = new Random();
-                int rand = rnd.Next(seed);
-                bool addOrSub = rnd.Next(100) > 50;
-
-                if (addOrSub)
-                {
-                    pt += rand;
-                }
-                else
-                {
-                    pt -= rand;
-                }
+                int rand = rnd.Next(-seed, seed);
+                pt += rand;
             }
             return pt;
         }
@@ -105,18 +133,26 @@ namespace ClickMe
         {
             while(true)
             {
+
+                /*
+                 * TODO: 
+                 *  https://social.msdn.microsoft.com/Forums/vstudio/en-US/88ae8842-5301-4b15-830e-1d6282303508/how-to-listen-to-keyboard-inputs?forum=netfxbcl
+                 *  
+                 *  Create key press event listener, cuz this loop burns cpu's
+                 */
+
                 if (MouseHelper.GetAsyncKeyState(Keys.F6) < 0)
                 {
                     click = !click;
 
                 }
-                Thread.Sleep(1);
+                //Thread.Sleep(1);
             }
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if (!int.TryParse(textBox1.Text, out int parsedValue))
+            if (!int.TryParse(globalDelay.Text, out int parsedValue))
             {
                 MessageBox.Show("Please enter a number");
             }
@@ -138,7 +174,8 @@ namespace ClickMe
 
         private void addRowBtn_Click(object sender, EventArgs e)
         {
-            var formPopup = new PositionPopup();
+            int.TryParse(globalDelay.Text, out int delay);
+            var formPopup = new PositionPopup(delay);
             formPopup.FormClosing += new FormClosingEventHandler(onPopupClose);
             formPopup.Show(this);
         }

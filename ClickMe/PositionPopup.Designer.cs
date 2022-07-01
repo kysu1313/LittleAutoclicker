@@ -42,6 +42,10 @@
             this.yValueLabel = new System.Windows.Forms.Label();
             this.xValueLabel = new System.Windows.Forms.Label();
             this.popupWarning = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.clickModifier = new System.Windows.Forms.ComboBox();
+            this.rightClick = new System.Windows.Forms.CheckBox();
+            this.doubleClick = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // label1
@@ -68,7 +72,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.25F);
-            this.label3.Location = new System.Drawing.Point(44, 185);
+            this.label3.Location = new System.Drawing.Point(52, 304);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(109, 20);
             this.label3.TabIndex = 2;
@@ -78,7 +82,7 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.25F);
-            this.label4.Location = new System.Drawing.Point(159, 185);
+            this.label4.Location = new System.Drawing.Point(167, 304);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(25, 20);
             this.label4.TabIndex = 3;
@@ -88,7 +92,7 @@
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.25F);
-            this.label5.Location = new System.Drawing.Point(273, 185);
+            this.label5.Location = new System.Drawing.Point(281, 304);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(24, 20);
             this.label5.TabIndex = 4;
@@ -98,7 +102,7 @@
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(91, 144);
+            this.label6.Location = new System.Drawing.Point(99, 263);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(273, 20);
             this.label6.TabIndex = 5;
@@ -122,7 +126,7 @@
             // button1
             // 
             this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.25F);
-            this.button1.Location = new System.Drawing.Point(316, 229);
+            this.button1.Location = new System.Drawing.Point(324, 348);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 43);
             this.button1.TabIndex = 3;
@@ -145,7 +149,7 @@
             // 
             this.yValueLabel.AutoSize = true;
             this.yValueLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.25F);
-            this.yValueLabel.Location = new System.Drawing.Point(298, 185);
+            this.yValueLabel.Location = new System.Drawing.Point(306, 304);
             this.yValueLabel.Name = "yValueLabel";
             this.yValueLabel.Size = new System.Drawing.Size(0, 20);
             this.yValueLabel.TabIndex = 12;
@@ -154,7 +158,7 @@
             // 
             this.xValueLabel.AutoSize = true;
             this.xValueLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.25F);
-            this.xValueLabel.Location = new System.Drawing.Point(185, 185);
+            this.xValueLabel.Location = new System.Drawing.Point(193, 304);
             this.xValueLabel.Name = "xValueLabel";
             this.xValueLabel.Size = new System.Drawing.Size(0, 20);
             this.xValueLabel.TabIndex = 13;
@@ -164,16 +168,65 @@
             this.popupWarning.AutoSize = true;
             this.popupWarning.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F);
             this.popupWarning.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.popupWarning.Location = new System.Drawing.Point(61, 237);
+            this.popupWarning.Location = new System.Drawing.Point(69, 356);
             this.popupWarning.Name = "popupWarning";
             this.popupWarning.Size = new System.Drawing.Size(0, 24);
             this.popupWarning.TabIndex = 15;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.25F);
+            this.label7.Location = new System.Drawing.Point(74, 145);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(79, 20);
+            this.label7.TabIndex = 16;
+            this.label7.Text = "Modifier: ";
+            // 
+            // clickModifier
+            // 
+            this.clickModifier.FormattingEnabled = true;
+            this.clickModifier.Items.AddRange(new object[] {
+            "None",
+            "Shift",
+            "Alt",
+            "Ctrl"});
+            this.clickModifier.Location = new System.Drawing.Point(163, 147);
+            this.clickModifier.Name = "clickModifier";
+            this.clickModifier.Size = new System.Drawing.Size(121, 21);
+            this.clickModifier.TabIndex = 17;
+            // 
+            // rightClick
+            // 
+            this.rightClick.AutoSize = true;
+            this.rightClick.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.25F);
+            this.rightClick.Location = new System.Drawing.Point(81, 196);
+            this.rightClick.Name = "rightClick";
+            this.rightClick.Size = new System.Drawing.Size(109, 24);
+            this.rightClick.TabIndex = 18;
+            this.rightClick.Text = "Right Click";
+            this.rightClick.UseVisualStyleBackColor = true;
+            // 
+            // doubleClick
+            // 
+            this.doubleClick.AutoSize = true;
+            this.doubleClick.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.25F);
+            this.doubleClick.Location = new System.Drawing.Point(196, 196);
+            this.doubleClick.Name = "doubleClick";
+            this.doubleClick.Size = new System.Drawing.Size(123, 24);
+            this.doubleClick.TabIndex = 19;
+            this.doubleClick.Text = "Double Click";
+            this.doubleClick.UseVisualStyleBackColor = true;
             // 
             // PositionPopup
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(442, 296);
+            this.ClientSize = new System.Drawing.Size(442, 416);
+            this.Controls.Add(this.doubleClick);
+            this.Controls.Add(this.rightClick);
+            this.Controls.Add(this.clickModifier);
+            this.Controls.Add(this.label7);
             this.Controls.Add(this.popupWarning);
             this.Controls.Add(this.xValueLabel);
             this.Controls.Add(this.yValueLabel);
@@ -211,5 +264,9 @@
         private System.Windows.Forms.Label yValueLabel;
         private System.Windows.Forms.Label xValueLabel;
         private System.Windows.Forms.Label popupWarning;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.ComboBox clickModifier;
+        private System.Windows.Forms.CheckBox rightClick;
+        private System.Windows.Forms.CheckBox doubleClick;
     }
 }
