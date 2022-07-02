@@ -49,6 +49,22 @@ namespace ClickMe
         [DllImport("user32.dll", CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall)]
         public static extern void mouse_event(long dwFlags, long dx, long dy, long cButtons, long dwExtraInfo);
 
+        [DllImport("user32.dll")]
+        public static extern int GetKeyboardState(byte[] keystate);
+
+
+        private void detectKeyDown(Keys key)
+        {
+            byte[] keys = new byte[255];
+
+            GetKeyboardState(keys);
+
+            if (keys[(int)key] == 129)
+            {
+                Console.WriteLine("Up Arrow key and Right Arrow key down.");
+            }
+        }
+
         public static void DoMouseClick(uint btnDown, uint btnUp)
         {
             var inputMouseDown = new INPUT();

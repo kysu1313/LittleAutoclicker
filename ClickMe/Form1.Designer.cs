@@ -47,6 +47,11 @@
             this.randomDelayToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.globalDelayToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.beginMouseRecording = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.xPosition = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.yPosition = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.positionModifier)).BeginInit();
             this.SuspendLayout();
             // 
@@ -132,7 +137,7 @@
             this.positionList.FormattingEnabled = true;
             this.positionList.Location = new System.Drawing.Point(290, 134);
             this.positionList.Name = "positionList";
-            this.positionList.Size = new System.Drawing.Size(287, 290);
+            this.positionList.Size = new System.Drawing.Size(287, 368);
             this.positionList.TabIndex = 8;
             this.positionList.SelectedIndexChanged += new System.EventHandler(this.positionList_SelectedIndexChanged_1);
             // 
@@ -195,12 +200,74 @@
             this.positionModifier.Size = new System.Drawing.Size(61, 20);
             this.positionModifier.TabIndex = 14;
             this.randomPositionToolTip.SetToolTip(this.positionModifier, "Click positions are modified by a max of this many pixels.");
+            this.positionModifier.Value = new decimal(new int[] {
+            2,
+            0,
+            0,
+            0});
+            // 
+            // beginMouseRecording
+            // 
+            this.beginMouseRecording.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.25F);
+            this.beginMouseRecording.Location = new System.Drawing.Point(53, 276);
+            this.beginMouseRecording.Name = "beginMouseRecording";
+            this.beginMouseRecording.Size = new System.Drawing.Size(142, 29);
+            this.beginMouseRecording.TabIndex = 15;
+            this.beginMouseRecording.Text = "Record Mouse";
+            this.beginMouseRecording.UseVisualStyleBackColor = true;
+            this.beginMouseRecording.Click += new System.EventHandler(this.beginMouseRecording_Click);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.25F);
+            this.label1.Location = new System.Drawing.Point(54, 331);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(30, 20);
+            this.label1.TabIndex = 16;
+            this.label1.Text = "X: ";
+            // 
+            // xPosition
+            // 
+            this.xPosition.AutoSize = true;
+            this.xPosition.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.25F);
+            this.xPosition.Location = new System.Drawing.Point(95, 331);
+            this.xPosition.Name = "xPosition";
+            this.xPosition.Size = new System.Drawing.Size(49, 20);
+            this.xPosition.TabIndex = 17;
+            this.xPosition.Text = "x pos";
+            this.xPosition.Click += new System.EventHandler(this.label4_Click);
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.25F);
+            this.label5.Location = new System.Drawing.Point(160, 331);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(29, 20);
+            this.label5.TabIndex = 18;
+            this.label5.Text = "Y: ";
+            // 
+            // yPosition
+            // 
+            this.yPosition.AutoSize = true;
+            this.yPosition.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.25F);
+            this.yPosition.Location = new System.Drawing.Point(195, 331);
+            this.yPosition.Name = "yPosition";
+            this.yPosition.Size = new System.Drawing.Size(49, 20);
+            this.yPosition.TabIndex = 19;
+            this.yPosition.Text = "y pos";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(622, 450);
+            this.ClientSize = new System.Drawing.Size(622, 535);
+            this.Controls.Add(this.yPosition);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.xPosition);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.beginMouseRecording);
             this.Controls.Add(this.positionModifier);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.delayPercentModifier);
@@ -243,6 +310,11 @@
         private System.Windows.Forms.ToolTip randomDelayToolTip;
         private System.Windows.Forms.ToolTip globalDelayToolTip;
         private System.Windows.Forms.ToolTip toolTip1;
+        private System.Windows.Forms.Button beginMouseRecording;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label xPosition;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label yPosition;
     }
 }
 

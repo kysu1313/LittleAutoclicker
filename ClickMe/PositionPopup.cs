@@ -118,7 +118,7 @@ namespace ClickMe
             }
 
             MousePosition mp = new MousePosition(label, (int)xP, (int)yP, (int)delay,
-                rightClick.Checked, doubleClick.Checked, keyModifier, useModifier);
+                rightClick.Checked, doubleClick.Checked, keyModifier, null, useModifier);
             if (PositionHelper.addItem(mp))
             {
                 this.Close();

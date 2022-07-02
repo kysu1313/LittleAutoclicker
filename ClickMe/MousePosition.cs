@@ -21,7 +21,8 @@ namespace ClickMe
         public VirtualKeyCode? modifier;
 
         public MousePosition(String label, int x, int y, int delay, 
-            bool isRightClick, bool isDoubleClick, VirtualKeyCode? modifier, bool useModifier = false)
+            bool isRightClick, bool isDoubleClick, VirtualKeyCode? modifier = null, 
+            Key? keyModifier = null, bool useModifier = false)
         {
             this.label = label;
             this.x = x;
