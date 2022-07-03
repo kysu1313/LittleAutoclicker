@@ -18,6 +18,8 @@ namespace ClickMe
         public static uint MOUSEEVENTF_LEFTUP = 0x04;
         public static uint MOUSEEVENTF_RIGHTDOWN = 0x08;
         public static uint MOUSEEVENTF_RIGHTUP = 0x10;
+        public static uint KEYEVENT_KEYUP = 0x0002;
+        public static uint KEYEVENT_KEYDOWN = 0;
 
         [DllImport("User32.Dll")]
         public static extern bool ClientToScreen(IntPtr hWnd, ref POINT point);
@@ -90,6 +92,25 @@ namespace ClickMe
             input.Data.Keyboard.Vk = (ushort)keyCode;
             input.Data.Keyboard.Scan = 0;
             input.Data.Keyboard.Flags = 0;
+            input.Data.Keyboard.Time = 0;
+            input.Data.Keyboard.ExtraInfo = IntPtr.Zero;
+            INPUT[] inputs = new INPUT[] { input };
+            if (SendInput(1, inputs, Marshal.SizeOf(typeof(INPUT))) == 0)
+            {
+                throw new Exception();
+            }
+        }
+
+        public static void SendKeyCommand(KeyCode keyCode, uint upDown)
+        {
+            INPUT input = new INPUT
+            {
+                Type = 1
+            };
+            input.Data.Keyboard = new KEYBDINPUT();
+            input.Data.Keyboard.Vk = (ushort)keyCode;
+            input.Data.Keyboard.Scan = 0;
+            input.Data.Keyboard.Flags = upDown;
             input.Data.Keyboard.Time = 0;
             input.Data.Keyboard.ExtraInfo = IntPtr.Zero;
             INPUT[] inputs = new INPUT[] { input };

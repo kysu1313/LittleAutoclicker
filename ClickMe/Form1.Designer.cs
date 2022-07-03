@@ -45,6 +45,7 @@
             this.positionModifier = new System.Windows.Forms.NumericUpDown();
             this.randomPositionToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.randomDelayToolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.repeatFor = new System.Windows.Forms.ComboBox();
             this.globalDelayToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.beginMouseRecording = new System.Windows.Forms.Button();
@@ -52,6 +53,8 @@
             this.xPosition = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.yPosition = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.clearAllBtn = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.positionModifier)).BeginInit();
             this.SuspendLayout();
             // 
@@ -124,17 +127,18 @@
             // addRowBtn
             // 
             this.addRowBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.25F);
-            this.addRowBtn.Location = new System.Drawing.Point(501, 94);
+            this.addRowBtn.Location = new System.Drawing.Point(524, 94);
             this.addRowBtn.Name = "addRowBtn";
-            this.addRowBtn.Size = new System.Drawing.Size(76, 34);
+            this.addRowBtn.Size = new System.Drawing.Size(53, 34);
             this.addRowBtn.TabIndex = 7;
-            this.addRowBtn.Text = "New +";
+            this.addRowBtn.Text = "New";
             this.addRowBtn.UseVisualStyleBackColor = true;
             this.addRowBtn.Click += new System.EventHandler(this.addRowBtn_Click);
             // 
             // positionList
             // 
             this.positionList.FormattingEnabled = true;
+            this.positionList.HorizontalScrollbar = true;
             this.positionList.Location = new System.Drawing.Point(290, 134);
             this.positionList.Name = "positionList";
             this.positionList.Size = new System.Drawing.Size(287, 368);
@@ -180,7 +184,7 @@
             // button2
             // 
             this.button2.AccessibleDescription = "Remove selected item";
-            this.button2.Location = new System.Drawing.Point(454, 94);
+            this.button2.Location = new System.Drawing.Point(481, 94);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(37, 34);
             this.button2.TabIndex = 13;
@@ -206,10 +210,23 @@
             0,
             0});
             // 
+            // repeatFor
+            // 
+            this.repeatFor.FormattingEnabled = true;
+            this.repeatFor.Items.AddRange(new object[] {
+            "Until Stopped (F6)",
+            "For number of loops",
+            "Until specified time"});
+            this.repeatFor.Location = new System.Drawing.Point(128, 260);
+            this.repeatFor.Name = "repeatFor";
+            this.repeatFor.Size = new System.Drawing.Size(119, 21);
+            this.repeatFor.TabIndex = 24;
+            this.randomDelayToolTip.SetToolTip(this.repeatFor, "Delays are modified by this percentage.");
+            // 
             // beginMouseRecording
             // 
             this.beginMouseRecording.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.25F);
-            this.beginMouseRecording.Location = new System.Drawing.Point(53, 276);
+            this.beginMouseRecording.Location = new System.Drawing.Point(56, 344);
             this.beginMouseRecording.Name = "beginMouseRecording";
             this.beginMouseRecording.Size = new System.Drawing.Size(142, 29);
             this.beginMouseRecording.TabIndex = 15;
@@ -221,7 +238,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.25F);
-            this.label1.Location = new System.Drawing.Point(54, 331);
+            this.label1.Location = new System.Drawing.Point(57, 399);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(30, 20);
             this.label1.TabIndex = 16;
@@ -231,7 +248,7 @@
             // 
             this.xPosition.AutoSize = true;
             this.xPosition.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.25F);
-            this.xPosition.Location = new System.Drawing.Point(95, 331);
+            this.xPosition.Location = new System.Drawing.Point(98, 399);
             this.xPosition.Name = "xPosition";
             this.xPosition.Size = new System.Drawing.Size(49, 20);
             this.xPosition.TabIndex = 17;
@@ -242,7 +259,7 @@
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.25F);
-            this.label5.Location = new System.Drawing.Point(160, 331);
+            this.label5.Location = new System.Drawing.Point(163, 399);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(29, 20);
             this.label5.TabIndex = 18;
@@ -252,17 +269,40 @@
             // 
             this.yPosition.AutoSize = true;
             this.yPosition.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.25F);
-            this.yPosition.Location = new System.Drawing.Point(195, 331);
+            this.yPosition.Location = new System.Drawing.Point(198, 399);
             this.yPosition.Name = "yPosition";
             this.yPosition.Size = new System.Drawing.Size(49, 20);
             this.yPosition.TabIndex = 19;
             this.yPosition.Text = "y pos";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(50, 263);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(72, 13);
+            this.label4.TabIndex = 23;
+            this.label4.Text = "Repeat Loop:";
+            // 
+            // clearAllBtn
+            // 
+            this.clearAllBtn.AccessibleDescription = "Remove selected item";
+            this.clearAllBtn.Location = new System.Drawing.Point(438, 94);
+            this.clearAllBtn.Name = "clearAllBtn";
+            this.clearAllBtn.Size = new System.Drawing.Size(37, 34);
+            this.clearAllBtn.TabIndex = 25;
+            this.clearAllBtn.Text = "XX";
+            this.clearAllBtn.UseVisualStyleBackColor = true;
+            this.clearAllBtn.Click += new System.EventHandler(this.clearAllBtn_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(622, 535);
+            this.Controls.Add(this.clearAllBtn);
+            this.Controls.Add(this.repeatFor);
+            this.Controls.Add(this.label4);
             this.Controls.Add(this.yPosition);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.xPosition);
@@ -315,6 +355,9 @@
         private System.Windows.Forms.Label xPosition;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label yPosition;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.ComboBox repeatFor;
+        private System.Windows.Forms.Button clearAllBtn;
     }
 }
 

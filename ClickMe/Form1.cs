@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -12,6 +13,7 @@ using System.Windows.Forms;
 using System.Windows.Input;
 using WindowsInput;
 using WindowsInput.Native;
+using static ClickMe.KeyCodes;
 using MouseEventArgs = System.Windows.Forms.MouseEventArgs;
 
 namespace ClickMe
@@ -29,7 +31,7 @@ namespace ClickMe
         private InputSimulator inputSimulator;
         private KeyboardListener KListener = new KeyboardListener();
         private MouseHook mouseHook = new MouseHook();
-        private System.Timers.Timer timer = new System.Timers.Timer();
+        private Stopwatch timer = new Stopwatch();
         private const String f6 = "F6";
         private Key? currentKeyPressed = null;
 
@@ -37,6 +39,7 @@ namespace ClickMe
         {
             inputSimulator = new InputSimulator();
             KListener.KeyDown += new RawKeyEventHandler(keyDownEvent);
+            KListener.KeyUp += new RawKeyEventHandler(keyUpEvent);
             InitializeComponent();
         }
 
@@ -53,7 +56,7 @@ namespace ClickMe
         {
             while (true)
             {
-                if (checkBox1.Checked && click)
+                if (checkBox1.Checked && click && PositionHelper.positions.Count > 0)
                 {
                     executeClick(PositionHelper.positions[currIndex]);
                 }
@@ -69,6 +72,11 @@ namespace ClickMe
                 Console.WriteLine("Stopped");
             }
         }
+        void keyUpEvent(object sender, RawKeyEventArgs args)
+        {
+            Console.WriteLine("Key up: " + args.Key.ToString());
+            currentKeyPressed = null;
+        }
 
         private void executeClick(MousePosition mousePosition)
         {
@@ -82,9 +90,10 @@ namespace ClickMe
 
             //inputSimulator.Mouse.MoveMouseTo(getRandInt(xp), getRandInt(yp));
 
-            if (mousePosition.useModifier)
+            if (mousePosition.useModifier && mousePosition.modifier.HasValue)
             {
-                inputSimulator.Keyboard.KeyDown((VirtualKeyCode)mousePosition.modifier);
+                MouseHelper.SendKeyCommand((KeyCode)virtualKeyToKeyCode(mousePosition.modifier.Value), MouseHelper.KEYEVENT_KEYDOWN);
+                Thread.Sleep(1);
             }
 
             if (mousePosition.isDoubleClick)
@@ -112,7 +121,7 @@ namespace ClickMe
 
             if (mousePosition.useModifier)
             {
-                inputSimulator.Keyboard.KeyUp((VirtualKeyCode)mousePosition.modifier);
+                MouseHelper.SendKeyCommand((KeyCode)virtualKeyToKeyCode(mousePosition.modifier), MouseHelper.KEYEVENT_KEYUP);
             }
 
             ++currIndex;
@@ -164,6 +173,11 @@ namespace ClickMe
         public void onPopupClose(object sender, FormClosingEventArgs e)
         {
             positionList.Items.Clear();
+            clearPositions();
+        }
+
+        private void clearPositions()
+        {
             if (PositionHelper.positions.Count > 0)
             {
                 PositionHelper.positions.ForEach(x =>
@@ -173,7 +187,7 @@ namespace ClickMe
             }
         }
 
-        private void appendClickPositionLabel(MousePosition x)
+        private void appendClickPositionLabel(MousePosition x, String mod = "")
         {
             var lbl = "";
             if (string.IsNullOrEmpty(x.label))
@@ -184,6 +198,12 @@ namespace ClickMe
             {
                 lbl = x.label;
             }
+
+            if (!string.IsNullOrEmpty(mod))
+            {
+                lbl += " + " + mod;
+            }
+
             String txt = $" - {lbl}, X: {x.x}, Y: {x.y}, Delay: {x.delay} (ms)";
             positionList.Items.Add(txt);
         }
@@ -200,15 +220,29 @@ namespace ClickMe
             }
         }
 
+        private bool isRecording = false;
+        private string recordBtnOffTxt = "Record Mouse";
+        private string recordBtnOnTxt = "Stop Recording";
+        private int lastElapsedTime = 0;
+
         private void beginMouseRecording_Click(object sender, EventArgs e)
         {
-            // check if user wants to append clicks to existing list or not.
-            //if (PositionHelper.positions.Count > 0)
-            //{
+            isRecording = !isRecording;
 
-            //}
-
-            recordMouse();
+            if (isRecording)
+            {
+                beginMouseRecording.Text = recordBtnOnTxt;
+                timer.Start();
+                recordMouse();
+            }
+            else
+            {
+                beginMouseRecording.Text = recordBtnOffTxt;
+                mouseHook.UnHook();
+                timer.Stop();
+                Thread.Sleep(20);
+                PositionHelper.positions.Remove(PositionHelper.positions.Last());
+            }
         }
 
         /*
@@ -224,46 +258,19 @@ namespace ClickMe
             mouseHook.MouseClickEvent += mh_MouseClickEvent;
             mouseHook.MouseDownEvent += mh_MouseDownEvent;
             mouseHook.MouseUpEvent += mh_MouseUpEvent;
-
-            timer.Start();
-
         }
 
         private void mh_MouseDownEvent(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Left)
-            {
-                //richTextBox1.AppendText("Left Button Press\n");
-
-            }
-            if (e.Button == MouseButtons.Right)
-            {
-                //richTextBox1.AppendText("Right Button Press\n");
-            }
-        }
-
-        private void mh_MouseUpEvent(object sender, MouseEventArgs e)
-        {
-
-            if (e.Button == MouseButtons.Left)
-            {
-                //richTextBox1.AppendText("Left Button Release\n");
-            }
-            if (e.Button == MouseButtons.Right)
-            {
-                //richTextBox1.AppendText("Right Button Release\n");
-            }
-
-        }
-        private void mh_MouseClickEvent(object sender, MouseEventArgs e)
-        {
             string sText = "";
-            int dly = (int)timer.Interval;
+            int dly = (int)timer.ElapsedMilliseconds - lastElapsedTime;
+            lastElapsedTime = (int)timer.ElapsedMilliseconds;
             int x = e.Location.X;
             int y = e.Location.Y;
             bool isRightClk = true;
             VirtualKeyCode kCode = VirtualKeyCode.RBUTTON;
             Key? modifierKey = null;
+            string modStr = "";
             bool isModified = false;
 
             if (e.Button == MouseButtons.Left || e.Button == MouseButtons.Right)
@@ -284,13 +291,40 @@ namespace ClickMe
                 if (currentKeyPressed.HasValue)
                 {
                     modifierKey = currentKeyPressed.Value;
+                    modStr = modifierKey.ToString();
                     isModified = true;
                 }
 
                 var mp = new MousePosition(sText, x, y, dly, isRightClk, false, kCode, modifierKey, isModified);
                 PositionHelper.addItem(mp);
-                appendClickPositionLabel(mp);
+                appendClickPositionLabel(mp, modStr);
             }
+        }
+
+        private static KeyCode? virtualKeyToKeyCode(VirtualKeyCode? key) => key switch
+        {
+            VirtualKeyCode.SHIFT => KeyCode.SHIFT,
+            VirtualKeyCode.MENU => KeyCode.ALT,
+            VirtualKeyCode.CONTROL => KeyCode.CONTROL,
+            _ => null,
+        };
+
+        private void mh_MouseUpEvent(object sender, MouseEventArgs e)
+        {
+
+            if (e.Button == MouseButtons.Left)
+            {
+                //richTextBox1.AppendText("Left Button Release\n");
+            }
+            if (e.Button == MouseButtons.Right)
+            {
+                //richTextBox1.AppendText("Right Button Release\n");
+            }
+
+        }
+        private void mh_MouseClickEvent(object sender, MouseEventArgs e)
+        {
+            
         }
 
         private void mh_MouseMoveEvent(object sender, MouseEventArgs e)
@@ -314,6 +348,17 @@ namespace ClickMe
         private void label4_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void clearAllBtn_Click(object sender, EventArgs e)
+        {
+            var res = MessageBox.Show("Are you sure you want to clear the list?", "Warning", MessageBoxButtons.YesNoCancel);
+            
+            if (res == DialogResult.Yes)
+            {
+                PositionHelper.positions.Clear();
+                positionList.Items.Clear();
+            }
         }
     }
 }

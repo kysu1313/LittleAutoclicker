@@ -129,9 +129,9 @@ namespace ClickMe
 
         private static (VirtualKeyCode?, bool) parseModifier(String name) => name switch
         {
-            "Shift"     => (VirtualKeyCode.LSHIFT, true),
-            "Alt"       => (VirtualKeyCode.LMENU, true),
-            "Ctrl"      => (VirtualKeyCode.LCONTROL, true),
+            "Shift"     => (VirtualKeyCode.SHIFT, true),
+            "Alt"       => (VirtualKeyCode.MENU, true),
+            "Ctrl"      => (VirtualKeyCode.CONTROL, true),
             _           => (null, false),
         };
     }
