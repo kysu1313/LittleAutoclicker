@@ -34,6 +34,17 @@ namespace ClickMe
         private Stopwatch timer = new Stopwatch();
         private const String f6 = "F6";
         private Key? currentKeyPressed = null;
+        private int clickCount = 0;
+
+        private string forNumberOfLoops = "For number of loops";
+        private string untilSpecifiedTime = "Until specified time";
+        private string startBtnTxt = "Start (F6)";
+        private string stopBtnTxt = "Stop (F6)";
+
+        private bool isRecording = false;
+        private string recordBtnOffTxt = "Record Mouse";
+        private string recordBtnOnTxt = "Stop Recording";
+        private int lastElapsedTime = 0;
 
         public Form1()
         {
@@ -52,16 +63,82 @@ namespace ClickMe
             AC.Start();
         }
 
+        private void startStopBtn_Click(object sender, EventArgs e)
+        {
+            if (!click && PositionHelper.positions.Count < 1)
+            {
+                var res = MessageBox.Show("You havn't added any clicks yet.", "Warning");
+            }
+            else
+            {
+                click = !click;
+            }
+            updateBtnColorAndText();
+        }
+
+        /*
+         *  Until Stopped (F6)
+         *  For number of loops
+         *  Until specified time
+         */
         private void AutoClick()
         {
             while (true)
             {
                 if (checkBox1.Checked && click && PositionHelper.positions.Count > 0)
                 {
-                    executeClick(PositionHelper.positions[currIndex]);
+                    if (string.Equals(repeatFor.Text, forNumberOfLoops) && checkValidClickCount())
+                    {
+                        executeClick(PositionHelper.positions[currIndex]);
+                        clickCount++;
+                    }
+                    else if (string.Equals(repeatFor.Text, untilSpecifiedTime) && checkValidRunTime())
+                    {
+                        executeClick(PositionHelper.positions[currIndex]);
+                        clickCount++;
+                    }
+                    else
+                    {
+                        executeClick(PositionHelper.positions[currIndex]);
+                    }
                 }
             }
         }
+
+        private bool checkValidRunTime()
+        {
+            int hours = Decimal.ToInt32(hrSelect.Value) * 60 * 60 * 1000;
+            int minutes = Decimal.ToInt32(mnSelect.Value) * 60 * 1000;
+            int seconds = Decimal.ToInt32(scSelect.Value) * 1000;
+
+            return timer.ElapsedMilliseconds < (hours + minutes + seconds);
+        }
+
+        private bool checkValidClickCount()
+        {
+            int maxClicks = Decimal.ToInt32(repeatCount.Value);
+            return clickCount < maxClicks;
+        }
+
+        private void updateBtnColorAndText()
+        {
+            if (click)
+            {
+                startStopBtn.BackColor = Color.Red;
+            }
+            else
+            {
+                startStopBtn.BackColor = Color.Green;
+            }
+            startStopBtn.Text = string.Equals(startStopBtn.Text, startBtnTxt) ? stopBtnTxt : startBtnTxt;
+        }
+
+        /// <summary>
+        /// Watch for key presses.
+        /// If F6 pressed, stop the click loop and reset clickCount.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="args"></param>
         void keyDownEvent(object sender, RawKeyEventArgs args)
         {
             Console.WriteLine("key / mouse: " + args.Key.ToString());
@@ -69,7 +146,8 @@ namespace ClickMe
             if (String.Equals(args.Key.ToString(), f6))
             {
                 click = !click;
-                Console.WriteLine("Stopped");
+                updateBtnColorAndText();
+                clickCount = 0;
             }
         }
         void keyUpEvent(object sender, RawKeyEventArgs args)
@@ -86,13 +164,15 @@ namespace ClickMe
             Console.WriteLine($"Move to: ({xp}, {yp}), with delay: {mousePosition.delay}");
             MouseHelper.POINT p = new MouseHelper.POINT(xp, yp);
             MouseHelper.ClientToScreen(Handle, ref p);
-            MouseHelper.SetCursorPos(getRandInt(xp), getRandInt(yp));
 
-            //inputSimulator.Mouse.MoveMouseTo(getRandInt(xp), getRandInt(yp));
+            (var xx, var yy) = getRandIntTuple(xp, yp);
+            MouseHelper.SetCursorPos(xx, yy);
 
-            if (mousePosition.useModifier && mousePosition.modifier.HasValue)
+            var code = virtualKeyToKeyCode(mousePosition.modifier);
+
+            if (mousePosition.useModifier && code != null)
             {
-                MouseHelper.SendKeyCommand((KeyCode)virtualKeyToKeyCode(mousePosition.modifier.Value), MouseHelper.KEYEVENT_KEYDOWN);
+                MouseHelper.SendKeyCommand((KeyCode)code, MouseHelper.KEYEVENT_KEYDOWN);
                 Thread.Sleep(1);
             }
 
@@ -134,7 +214,7 @@ namespace ClickMe
             
         }
 
-        private int getRandInt(int pt)
+        private (int,int) getRandIntTuple(int x, int y)
         {
             if (randomizePositions.Checked)
             {
@@ -143,11 +223,20 @@ namespace ClickMe
                 {
                     seed = Decimal.ToInt32(positionModifier.Value);
                 }
-                Random rnd = new Random();
-                int rand = rnd.Next(-seed, seed);
-                pt += rand;
+                Random rndX = new Random();
+                Random rndY = new Random();
+                int rx = rndX.Next(0, seed);
+                int ry = rndX.Next(0, seed);
+                bool xPos = rndX.Next(1, 10) > 5;
+                bool yPos = rndY.Next(1, 10) > 5;
+                rx = xPos ? rx : -rx;
+                ry = yPos ? ry : -ry;
+
+                Console.WriteLine($"Random Val, x: {rx}, y: {ry} ");
+
+                return (x + rx, y + ry);
             }
-            return pt;
+            return (x, y);
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -172,11 +261,10 @@ namespace ClickMe
 
         public void onPopupClose(object sender, FormClosingEventArgs e)
         {
-            positionList.Items.Clear();
-            clearPositions();
+            updatePositions();
         }
 
-        private void clearPositions()
+        private void updatePositions()
         {
             if (PositionHelper.positions.Count > 0)
             {
@@ -190,6 +278,7 @@ namespace ClickMe
         private void appendClickPositionLabel(MousePosition x, String mod = "")
         {
             var lbl = "";
+            var md = "";
             if (string.IsNullOrEmpty(x.label))
             {
                 lbl = positionList.Items.Count + 1 + "";
@@ -201,10 +290,10 @@ namespace ClickMe
 
             if (!string.IsNullOrEmpty(mod))
             {
-                lbl += " + " + mod;
+                md += " + " + mod;
             }
 
-            String txt = $" - {lbl}, X: {x.x}, Y: {x.y}, Delay: {x.delay} (ms)";
+            String txt = $" - {lbl}, X: {x.x}, Y: {x.y}, Delay: {x.delay} (ms) {md}";
             positionList.Items.Add(txt);
         }
 
@@ -219,11 +308,6 @@ namespace ClickMe
                 positionList.Items.Remove(item);
             }
         }
-
-        private bool isRecording = false;
-        private string recordBtnOffTxt = "Record Mouse";
-        private string recordBtnOnTxt = "Stop Recording";
-        private int lastElapsedTime = 0;
 
         private void beginMouseRecording_Click(object sender, EventArgs e)
         {
@@ -245,12 +329,6 @@ namespace ClickMe
             }
         }
 
-        /*
-         * TODO: BG thread to capture mouse input
-         * 
-         * Add global timer to auto detect delays between clicks
-         * 
-         */
         private void recordMouse()
         {
             mouseHook.SetHook();
@@ -265,6 +343,12 @@ namespace ClickMe
             string sText = "";
             int dly = (int)timer.ElapsedMilliseconds - lastElapsedTime;
             lastElapsedTime = (int)timer.ElapsedMilliseconds;
+
+            if (dly <= 2)
+            {
+                return; 
+            }
+
             int x = e.Location.X;
             int y = e.Location.Y;
             bool isRightClk = true;
@@ -295,7 +379,8 @@ namespace ClickMe
                     isModified = true;
                 }
 
-                var mp = new MousePosition(sText, x, y, dly, isRightClk, false, kCode, modifierKey, isModified);
+                var mp = new MousePosition(sText, x, y, dly, isRightClk, false, 
+                    KeyToVirtualKeyCode(modifierKey), modifierKey, isModified);
                 PositionHelper.addItem(mp);
                 appendClickPositionLabel(mp, modStr);
             }
@@ -309,23 +394,13 @@ namespace ClickMe
             _ => null,
         };
 
-        private void mh_MouseUpEvent(object sender, MouseEventArgs e)
+        private static VirtualKeyCode? KeyToVirtualKeyCode(Key? key) => key switch
         {
-
-            if (e.Button == MouseButtons.Left)
-            {
-                //richTextBox1.AppendText("Left Button Release\n");
-            }
-            if (e.Button == MouseButtons.Right)
-            {
-                //richTextBox1.AppendText("Right Button Release\n");
-            }
-
-        }
-        private void mh_MouseClickEvent(object sender, MouseEventArgs e)
-        {
-            
-        }
+            Key.LeftShift => VirtualKeyCode.SHIFT,
+            Key.LeftAlt => VirtualKeyCode.MENU,
+            Key.LeftCtrl  => VirtualKeyCode.CONTROL,
+            _ => null,
+        };
 
         private void mh_MouseMoveEvent(object sender, MouseEventArgs e)
         {
@@ -333,21 +408,6 @@ namespace ClickMe
             int y = e.Location.Y;
             xPosition.Text = x + "";
             yPosition.Text = y + "";
-        }
-
-        private void label2_Click(object sender, EventArgs e) { }
-
-        private void positionList_SelectedIndexChanged(object sender, EventArgs e) { }
-
-        private void label1_Click(object sender, EventArgs e) { }
-
-        private void positionList_SelectedIndexChanged_1(object sender, EventArgs e) { }
-
-        private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e) { }
-
-        private void label4_Click(object sender, EventArgs e)
-        {
-
         }
 
         private void clearAllBtn_Click(object sender, EventArgs e)
@@ -360,5 +420,48 @@ namespace ClickMe
                 positionList.Items.Clear();
             }
         }
+
+        private void repeatFor_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (string.Equals(repeatFor.Text, forNumberOfLoops, StringComparison.OrdinalIgnoreCase))
+            {
+                repeatSelection.Text = "Total Clicks: ";
+                repeatSelection.Visible = true;
+                repeatCount.Visible = true;
+            }
+            else if (string.Equals(repeatFor.Text, untilSpecifiedTime, StringComparison.OrdinalIgnoreCase))
+            {
+                repeatSelection.Text = "Total Time: ";
+                repeatCount.Visible = false;
+                repeatSelection.Visible = true;
+                hrLbl.Visible = true;
+                mnLbl.Visible = true;
+                scLbl.Visible = true;
+                hrSelect.Visible = true;
+                mnSelect.Visible = true;
+                scSelect.Visible = true;
+            }
+            else
+            {
+                repeatCount.Visible = false;
+                repeatSelection.Visible = false;
+                hrLbl.Visible = false;
+                mnLbl.Visible = false;
+                scLbl.Visible = false;
+                hrSelect.Visible = false;
+                mnSelect.Visible = false;
+                scSelect.Visible = false;
+            }
+        }
+
+        private void label2_Click(object sender, EventArgs e) { }
+        private void positionList_SelectedIndexChanged(object sender, EventArgs e) { }
+        private void label1_Click(object sender, EventArgs e) { }
+        private void positionList_SelectedIndexChanged_1(object sender, EventArgs e) { }
+        private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e) { }
+        private void label4_Click(object sender, EventArgs e) { }
+        private void mh_MouseClickEvent(object sender, MouseEventArgs e) { }
+        private void mh_MouseUpEvent(object sender, MouseEventArgs e) { }
+        private void numericUpDown2_ValueChanged(object sender, EventArgs e) { }
     }
 }

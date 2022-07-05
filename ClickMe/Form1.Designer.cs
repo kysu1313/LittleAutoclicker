@@ -30,8 +30,6 @@
         {
             this.components = new System.ComponentModel.Container();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.globalDelay = new System.Windows.Forms.TextBox();
-            this.button1 = new System.Windows.Forms.Button();
             this.globalDelayLabel = new System.Windows.Forms.Label();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.label2 = new System.Windows.Forms.Label();
@@ -44,6 +42,7 @@
             this.button2 = new System.Windows.Forms.Button();
             this.positionModifier = new System.Windows.Forms.NumericUpDown();
             this.randomPositionToolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.globalDelay = new System.Windows.Forms.NumericUpDown();
             this.randomDelayToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.repeatFor = new System.Windows.Forms.ComboBox();
             this.globalDelayToolTip = new System.Windows.Forms.ToolTip(this.components);
@@ -55,7 +54,21 @@
             this.yPosition = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.clearAllBtn = new System.Windows.Forms.Button();
+            this.repeatSelection = new System.Windows.Forms.Label();
+            this.repeatCount = new System.Windows.Forms.NumericUpDown();
+            this.hrSelect = new System.Windows.Forms.NumericUpDown();
+            this.mnSelect = new System.Windows.Forms.NumericUpDown();
+            this.scSelect = new System.Windows.Forms.NumericUpDown();
+            this.hrLbl = new System.Windows.Forms.Label();
+            this.mnLbl = new System.Windows.Forms.Label();
+            this.scLbl = new System.Windows.Forms.Label();
+            this.startStopBtn = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.positionModifier)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.globalDelay)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repeatCount)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.hrSelect)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.mnSelect)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.scSelect)).BeginInit();
             this.SuspendLayout();
             // 
             // checkBox1
@@ -63,38 +76,20 @@
             this.checkBox1.AutoSize = true;
             this.checkBox1.Checked = true;
             this.checkBox1.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox1.Location = new System.Drawing.Point(53, 134);
+            this.checkBox1.Location = new System.Drawing.Point(53, 143);
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new System.Drawing.Size(132, 17);
             this.checkBox1.TabIndex = 0;
             this.checkBox1.Text = "Enable F6 Start / Stop";
             this.checkBox1.UseVisualStyleBackColor = true;
             // 
-            // globalDelay
-            // 
-            this.globalDelay.Location = new System.Drawing.Point(53, 61);
-            this.globalDelay.Name = "globalDelay";
-            this.globalDelay.Size = new System.Drawing.Size(100, 20);
-            this.globalDelay.TabIndex = 1;
-            this.globalDelayToolTip.SetToolTip(this.globalDelay, "Apply this delay (ms) to all clicks, can be overridden for individual positions.");
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(159, 61);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 2;
-            this.button1.Text = "Set";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
             // globalDelayLabel
             // 
             this.globalDelayLabel.AutoSize = true;
-            this.globalDelayLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.25F);
-            this.globalDelayLabel.Location = new System.Drawing.Point(50, 34);
+            this.globalDelayLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            this.globalDelayLabel.Location = new System.Drawing.Point(50, 108);
             this.globalDelayLabel.Name = "globalDelayLabel";
-            this.globalDelayLabel.Size = new System.Drawing.Size(145, 20);
+            this.globalDelayLabel.Size = new System.Drawing.Size(89, 13);
             this.globalDelayLabel.TabIndex = 3;
             this.globalDelayLabel.Text = "Global Delay (ms)";
             this.globalDelayLabel.Click += new System.EventHandler(this.label1_Click);
@@ -127,7 +122,7 @@
             // addRowBtn
             // 
             this.addRowBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.25F);
-            this.addRowBtn.Location = new System.Drawing.Point(524, 94);
+            this.addRowBtn.Location = new System.Drawing.Point(588, 94);
             this.addRowBtn.Name = "addRowBtn";
             this.addRowBtn.Size = new System.Drawing.Size(53, 34);
             this.addRowBtn.TabIndex = 7;
@@ -141,7 +136,7 @@
             this.positionList.HorizontalScrollbar = true;
             this.positionList.Location = new System.Drawing.Point(290, 134);
             this.positionList.Name = "positionList";
-            this.positionList.Size = new System.Drawing.Size(287, 368);
+            this.positionList.Size = new System.Drawing.Size(351, 368);
             this.positionList.TabIndex = 8;
             this.positionList.SelectedIndexChanged += new System.EventHandler(this.positionList_SelectedIndexChanged_1);
             // 
@@ -184,7 +179,7 @@
             // button2
             // 
             this.button2.AccessibleDescription = "Remove selected item";
-            this.button2.Location = new System.Drawing.Point(481, 94);
+            this.button2.Location = new System.Drawing.Point(545, 94);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(37, 34);
             this.button2.TabIndex = 13;
@@ -210,6 +205,24 @@
             0,
             0});
             // 
+            // globalDelay
+            // 
+            this.globalDelay.Location = new System.Drawing.Point(167, 103);
+            this.globalDelay.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.globalDelay.Name = "globalDelay";
+            this.globalDelay.Size = new System.Drawing.Size(80, 20);
+            this.globalDelay.TabIndex = 35;
+            this.randomPositionToolTip.SetToolTip(this.globalDelay, "Click positions are modified by a max of this many pixels.");
+            this.globalDelay.Value = new decimal(new int[] {
+            2,
+            0,
+            0,
+            0});
+            // 
             // repeatFor
             // 
             this.repeatFor.FormattingEnabled = true;
@@ -222,13 +235,14 @@
             this.repeatFor.Size = new System.Drawing.Size(119, 21);
             this.repeatFor.TabIndex = 24;
             this.randomDelayToolTip.SetToolTip(this.repeatFor, "Delays are modified by this percentage.");
+            this.repeatFor.SelectedIndexChanged += new System.EventHandler(this.repeatFor_SelectedIndexChanged);
             // 
             // beginMouseRecording
             // 
             this.beginMouseRecording.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.25F);
-            this.beginMouseRecording.Location = new System.Drawing.Point(56, 344);
+            this.beginMouseRecording.Location = new System.Drawing.Point(53, 387);
             this.beginMouseRecording.Name = "beginMouseRecording";
-            this.beginMouseRecording.Size = new System.Drawing.Size(142, 29);
+            this.beginMouseRecording.Size = new System.Drawing.Size(194, 29);
             this.beginMouseRecording.TabIndex = 15;
             this.beginMouseRecording.Text = "Record Mouse";
             this.beginMouseRecording.UseVisualStyleBackColor = true;
@@ -238,7 +252,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.25F);
-            this.label1.Location = new System.Drawing.Point(57, 399);
+            this.label1.Location = new System.Drawing.Point(55, 419);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(30, 20);
             this.label1.TabIndex = 16;
@@ -248,7 +262,7 @@
             // 
             this.xPosition.AutoSize = true;
             this.xPosition.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.25F);
-            this.xPosition.Location = new System.Drawing.Point(98, 399);
+            this.xPosition.Location = new System.Drawing.Point(96, 419);
             this.xPosition.Name = "xPosition";
             this.xPosition.Size = new System.Drawing.Size(49, 20);
             this.xPosition.TabIndex = 17;
@@ -259,7 +273,7 @@
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.25F);
-            this.label5.Location = new System.Drawing.Point(163, 399);
+            this.label5.Location = new System.Drawing.Point(161, 419);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(29, 20);
             this.label5.TabIndex = 18;
@@ -269,7 +283,7 @@
             // 
             this.yPosition.AutoSize = true;
             this.yPosition.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.25F);
-            this.yPosition.Location = new System.Drawing.Point(198, 399);
+            this.yPosition.Location = new System.Drawing.Point(196, 419);
             this.yPosition.Name = "yPosition";
             this.yPosition.Size = new System.Drawing.Size(49, 20);
             this.yPosition.TabIndex = 19;
@@ -287,7 +301,7 @@
             // clearAllBtn
             // 
             this.clearAllBtn.AccessibleDescription = "Remove selected item";
-            this.clearAllBtn.Location = new System.Drawing.Point(438, 94);
+            this.clearAllBtn.Location = new System.Drawing.Point(502, 94);
             this.clearAllBtn.Name = "clearAllBtn";
             this.clearAllBtn.Size = new System.Drawing.Size(37, 34);
             this.clearAllBtn.TabIndex = 25;
@@ -295,11 +309,107 @@
             this.clearAllBtn.UseVisualStyleBackColor = true;
             this.clearAllBtn.Click += new System.EventHandler(this.clearAllBtn_Click);
             // 
+            // repeatSelection
+            // 
+            this.repeatSelection.AutoSize = true;
+            this.repeatSelection.Location = new System.Drawing.Point(50, 305);
+            this.repeatSelection.Name = "repeatSelection";
+            this.repeatSelection.Size = new System.Drawing.Size(42, 13);
+            this.repeatSelection.TabIndex = 26;
+            this.repeatSelection.Text = "Repeat";
+            this.repeatSelection.Visible = false;
+            // 
+            // repeatCount
+            // 
+            this.repeatCount.Location = new System.Drawing.Point(128, 303);
+            this.repeatCount.Name = "repeatCount";
+            this.repeatCount.Size = new System.Drawing.Size(119, 20);
+            this.repeatCount.TabIndex = 27;
+            this.repeatCount.Visible = false;
+            // 
+            // hrSelect
+            // 
+            this.hrSelect.Location = new System.Drawing.Point(72, 338);
+            this.hrSelect.Name = "hrSelect";
+            this.hrSelect.Size = new System.Drawing.Size(44, 20);
+            this.hrSelect.TabIndex = 28;
+            this.hrSelect.Visible = false;
+            // 
+            // mnSelect
+            // 
+            this.mnSelect.Location = new System.Drawing.Point(144, 338);
+            this.mnSelect.Name = "mnSelect";
+            this.mnSelect.Size = new System.Drawing.Size(45, 20);
+            this.mnSelect.TabIndex = 29;
+            this.mnSelect.Visible = false;
+            this.mnSelect.ValueChanged += new System.EventHandler(this.numericUpDown2_ValueChanged);
+            // 
+            // scSelect
+            // 
+            this.scSelect.Location = new System.Drawing.Point(217, 338);
+            this.scSelect.Name = "scSelect";
+            this.scSelect.Size = new System.Drawing.Size(48, 20);
+            this.scSelect.TabIndex = 30;
+            this.scSelect.Visible = false;
+            // 
+            // hrLbl
+            // 
+            this.hrLbl.AutoSize = true;
+            this.hrLbl.Location = new System.Drawing.Point(50, 340);
+            this.hrLbl.Name = "hrLbl";
+            this.hrLbl.Size = new System.Drawing.Size(18, 13);
+            this.hrLbl.TabIndex = 31;
+            this.hrLbl.Text = "H:";
+            this.hrLbl.Visible = false;
+            // 
+            // mnLbl
+            // 
+            this.mnLbl.AutoSize = true;
+            this.mnLbl.Location = new System.Drawing.Point(122, 340);
+            this.mnLbl.Name = "mnLbl";
+            this.mnLbl.Size = new System.Drawing.Size(19, 13);
+            this.mnLbl.TabIndex = 32;
+            this.mnLbl.Text = "M:";
+            this.mnLbl.Visible = false;
+            // 
+            // scLbl
+            // 
+            this.scLbl.AutoSize = true;
+            this.scLbl.Location = new System.Drawing.Point(195, 340);
+            this.scLbl.Name = "scLbl";
+            this.scLbl.Size = new System.Drawing.Size(17, 13);
+            this.scLbl.TabIndex = 33;
+            this.scLbl.Text = "S:";
+            this.scLbl.Visible = false;
+            // 
+            // startStopBtn
+            // 
+            this.startStopBtn.BackColor = System.Drawing.Color.Green;
+            this.startStopBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.25F);
+            this.startStopBtn.ForeColor = System.Drawing.Color.White;
+            this.startStopBtn.Location = new System.Drawing.Point(502, 22);
+            this.startStopBtn.Name = "startStopBtn";
+            this.startStopBtn.Size = new System.Drawing.Size(139, 36);
+            this.startStopBtn.TabIndex = 34;
+            this.startStopBtn.Text = "Start (F6)";
+            this.startStopBtn.UseVisualStyleBackColor = false;
+            this.startStopBtn.Click += new System.EventHandler(this.startStopBtn_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(622, 535);
+            this.ClientSize = new System.Drawing.Size(681, 535);
+            this.Controls.Add(this.globalDelay);
+            this.Controls.Add(this.startStopBtn);
+            this.Controls.Add(this.scLbl);
+            this.Controls.Add(this.mnLbl);
+            this.Controls.Add(this.hrLbl);
+            this.Controls.Add(this.scSelect);
+            this.Controls.Add(this.mnSelect);
+            this.Controls.Add(this.hrSelect);
+            this.Controls.Add(this.repeatCount);
+            this.Controls.Add(this.repeatSelection);
             this.Controls.Add(this.clearAllBtn);
             this.Controls.Add(this.repeatFor);
             this.Controls.Add(this.label4);
@@ -318,13 +428,16 @@
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.globalDelayLabel);
-            this.Controls.Add(this.button1);
-            this.Controls.Add(this.globalDelay);
             this.Controls.Add(this.checkBox1);
             this.Name = "Form1";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.positionModifier)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.globalDelay)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repeatCount)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.hrSelect)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.mnSelect)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.scSelect)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -333,8 +446,6 @@
         #endregion
 
         private System.Windows.Forms.CheckBox checkBox1;
-        private System.Windows.Forms.TextBox globalDelay;
-        private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Label globalDelayLabel;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
         private System.Windows.Forms.Label label2;
@@ -358,6 +469,16 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.ComboBox repeatFor;
         private System.Windows.Forms.Button clearAllBtn;
+        private System.Windows.Forms.Label repeatSelection;
+        private System.Windows.Forms.NumericUpDown repeatCount;
+        private System.Windows.Forms.NumericUpDown hrSelect;
+        private System.Windows.Forms.NumericUpDown mnSelect;
+        private System.Windows.Forms.NumericUpDown scSelect;
+        private System.Windows.Forms.Label hrLbl;
+        private System.Windows.Forms.Label mnLbl;
+        private System.Windows.Forms.Label scLbl;
+        private System.Windows.Forms.Button startStopBtn;
+        private System.Windows.Forms.NumericUpDown globalDelay;
     }
 }
 
