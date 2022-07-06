@@ -387,15 +387,17 @@ namespace ClickMe
 
         private void mh_MouseDownEvent(object sender, MouseEventArgs e)
         {
+            bool isFirstClick = false;
             if (!timer.IsRunning)
             {
                 timer.Start();
+                isFirstClick = true;
             }
             string sText = "";
             int dly = (int)timer.ElapsedMilliseconds - lastElapsedTime;
             lastElapsedTime = (int)timer.ElapsedMilliseconds;
 
-            if (dly <= 2)
+            if (!isFirstClick && dly <= 2)
             {
                 return; 
             }
