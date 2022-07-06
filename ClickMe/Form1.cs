@@ -35,6 +35,8 @@ namespace ClickMe
         private const String f6 = "F6";
         private Key? currentKeyPressed = null;
         private int clickCount = 0;
+        private Key? customStartStop = null;
+        private bool isModalOpen = false;
 
         private string forNumberOfLoops = "For number of loops";
         private string untilSpecifiedTime = "Until specified time";
@@ -57,6 +59,8 @@ namespace ClickMe
         private void Form1_Load(object sender, EventArgs e)
         {
             currIndex = 0;
+            startStopSelect.DataSource = Enum.GetValues(typeof(Key));
+            startStopSelect.SelectedItem = Key.F6;
             CheckForIllegalCrossThreadCalls = false;
             Thread AC = new Thread(AutoClick);
             backgroundWorker1.RunWorkerAsync();
@@ -85,7 +89,7 @@ namespace ClickMe
         {
             while (true)
             {
-                if (checkBox1.Checked && click && PositionHelper.positions.Count > 0)
+                if (enableStartStopBtn.Checked && click && PositionHelper.positions.Count > 0)
                 {
                     if (string.Equals(repeatFor.Text, forNumberOfLoops) && checkValidClickCount())
                     {
@@ -141,21 +145,36 @@ namespace ClickMe
         /// <param name="args"></param>
         void keyDownEvent(object sender, RawKeyEventArgs args)
         {
-            Console.WriteLine("key / mouse: " + args.Key.ToString());
             currentKeyPressed = args.Key;
-            if (String.Equals(args.Key.ToString(), f6))
+            var kcd = customStartStop.HasValue && customStartStop != Key.None ? 
+                customStartStop.Value.ToString() : f6;
+            Console.WriteLine("key / mouse: " + args.Key.ToString());
+            if (String.Equals(args.Key.ToString(), kcd))
             {
-                click = !click;
+                if (!click && isModalOpen)
+                {
+                    MessageBox.Show("Please close the popup before running.", "Warning");
+                }
+                else
+                {
+                    click = !click;
+                }
                 updateBtnColorAndText();
                 clickCount = 0;
             }
         }
+
+        // Reset clicked button when it is released
         void keyUpEvent(object sender, RawKeyEventArgs args)
         {
             Console.WriteLine("Key up: " + args.Key.ToString());
             currentKeyPressed = null;
         }
 
+        /// <summary>
+        /// General click event.
+        /// </summary>
+        /// <param name="mousePosition"></param>
         private void executeClick(MousePosition mousePosition)
         {
             int xp = mousePosition.x;
@@ -214,6 +233,12 @@ namespace ClickMe
             
         }
 
+        /// <summary>
+        /// Randomize the click positions by 'positionModifier' amount of pixels
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <returns></returns>
         private (int,int) getRandIntTuple(int x, int y)
         {
             if (randomizePositions.Checked)
@@ -239,6 +264,7 @@ namespace ClickMe
             return (x, y);
         }
 
+        // Set a global delay
         private void button1_Click(object sender, EventArgs e)
         {
             if (!int.TryParse(globalDelay.Text, out int parsedValue))
@@ -251,30 +277,51 @@ namespace ClickMe
             }
         }
 
+        // Trigger to open the add click position row popup
         private void addRowBtn_Click(object sender, EventArgs e)
         {
             int.TryParse(globalDelay.Text, out int delay);
             var formPopup = new PositionPopup(delay);
+            isModalOpen = true;
             formPopup.FormClosing += new FormClosingEventHandler(onPopupClose);
             formPopup.Show(this);
         }
 
+        /// <summary>
+        /// Run this when the popup closes
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void onPopupClose(object sender, FormClosingEventArgs e)
         {
+            isModalOpen = false;
             updatePositions();
         }
 
+        /// <summary>
+        /// Refresh the click position list
+        /// </summary>
         private void updatePositions()
         {
             if (PositionHelper.positions.Count > 0)
             {
+                positionList.Items.Clear();
                 PositionHelper.positions.ForEach(x =>
                 {
                     appendClickPositionLabel(x);
                 });
             }
+            else
+            {
+                positionList.Items.Clear();
+            }
         }
 
+        /// <summary>
+        /// Append a new click position to the list
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="mod"></param>
         private void appendClickPositionLabel(MousePosition x, String mod = "")
         {
             var lbl = "";
@@ -316,7 +363,6 @@ namespace ClickMe
             if (isRecording)
             {
                 beginMouseRecording.Text = recordBtnOnTxt;
-                timer.Start();
                 recordMouse();
             }
             else
@@ -326,6 +372,7 @@ namespace ClickMe
                 timer.Stop();
                 Thread.Sleep(20);
                 PositionHelper.positions.Remove(PositionHelper.positions.Last());
+                updatePositions();
             }
         }
 
@@ -340,6 +387,10 @@ namespace ClickMe
 
         private void mh_MouseDownEvent(object sender, MouseEventArgs e)
         {
+            if (!timer.IsRunning)
+            {
+                timer.Start();
+            }
             string sText = "";
             int dly = (int)timer.ElapsedMilliseconds - lastElapsedTime;
             lastElapsedTime = (int)timer.ElapsedMilliseconds;
@@ -452,6 +503,22 @@ namespace ClickMe
                 mnSelect.Visible = false;
                 scSelect.Visible = false;
             }
+        }
+
+        private void startStopSelect_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            customStartStop = (Key)startStopSelect.SelectedItem;
+            Console.WriteLine("key / mouse: " + customStartStop.ToString());
+            updateStartStopLabels(customStartStop.ToString());
+        }
+
+        private void updateStartStopLabels(String keyLbl)
+        {
+            enableStartStopBtn.Text = $"Enable {keyLbl} Start / Stop";
+            topLabel.Text = $"{keyLbl} to start and stop";
+            startBtnTxt = $"Start ({keyLbl})";
+            stopBtnTxt = $"Stop ({keyLbl})";
+            updateBtnColorAndText();
         }
 
         private void label2_Click(object sender, EventArgs e) { }

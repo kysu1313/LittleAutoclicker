@@ -59,6 +59,8 @@ namespace ClickMe
         {
             #region Media
 
+            A_DEFAULT_F6 = 0x75,
+
             /// <summary>
             /// Next track if a song is playing
             /// </summary>

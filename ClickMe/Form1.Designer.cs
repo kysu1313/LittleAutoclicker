@@ -29,10 +29,10 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.enableStartStopBtn = new System.Windows.Forms.CheckBox();
             this.globalDelayLabel = new System.Windows.Forms.Label();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
-            this.label2 = new System.Windows.Forms.Label();
+            this.topLabel = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.addRowBtn = new System.Windows.Forms.Button();
             this.positionList = new System.Windows.Forms.ListBox();
@@ -63,6 +63,8 @@
             this.mnLbl = new System.Windows.Forms.Label();
             this.scLbl = new System.Windows.Forms.Label();
             this.startStopBtn = new System.Windows.Forms.Button();
+            this.label6 = new System.Windows.Forms.Label();
+            this.startStopSelect = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.positionModifier)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.globalDelay)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repeatCount)).BeginInit();
@@ -71,17 +73,17 @@
             ((System.ComponentModel.ISupportInitialize)(this.scSelect)).BeginInit();
             this.SuspendLayout();
             // 
-            // checkBox1
+            // enableStartStopBtn
             // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Checked = true;
-            this.checkBox1.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox1.Location = new System.Drawing.Point(53, 143);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(132, 17);
-            this.checkBox1.TabIndex = 0;
-            this.checkBox1.Text = "Enable F6 Start / Stop";
-            this.checkBox1.UseVisualStyleBackColor = true;
+            this.enableStartStopBtn.AutoSize = true;
+            this.enableStartStopBtn.Checked = true;
+            this.enableStartStopBtn.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.enableStartStopBtn.Location = new System.Drawing.Point(53, 143);
+            this.enableStartStopBtn.Name = "enableStartStopBtn";
+            this.enableStartStopBtn.Size = new System.Drawing.Size(132, 17);
+            this.enableStartStopBtn.TabIndex = 0;
+            this.enableStartStopBtn.Text = "Enable F6 Start / Stop";
+            this.enableStartStopBtn.UseVisualStyleBackColor = true;
             // 
             // globalDelayLabel
             // 
@@ -98,16 +100,16 @@
             // 
             this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker1_DoWork);
             // 
-            // label2
+            // topLabel
             // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(286, 34);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(205, 24);
-            this.label2.TabIndex = 4;
-            this.label2.Text = "Use F6 to start and stop";
-            this.label2.Click += new System.EventHandler(this.label2_Click);
+            this.topLabel.AutoSize = true;
+            this.topLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.topLabel.Location = new System.Drawing.Point(286, 34);
+            this.topLabel.Name = "topLabel";
+            this.topLabel.Size = new System.Drawing.Size(167, 24);
+            this.topLabel.TabIndex = 4;
+            this.topLabel.Text = "F6 to start and stop";
+            this.topLabel.Click += new System.EventHandler(this.label2_Click);
             // 
             // label3
             // 
@@ -395,11 +397,32 @@
             this.startStopBtn.UseVisualStyleBackColor = false;
             this.startStopBtn.Click += new System.EventHandler(this.startStopBtn_Click);
             // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            this.label6.Location = new System.Drawing.Point(50, 34);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(137, 13);
+            this.label6.TabIndex = 36;
+            this.label6.Text = "Custom Start / Stop Button:";
+            // 
+            // startStopSelect
+            // 
+            this.startStopSelect.FormattingEnabled = true;
+            this.startStopSelect.Location = new System.Drawing.Point(52, 50);
+            this.startStopSelect.Name = "startStopSelect";
+            this.startStopSelect.Size = new System.Drawing.Size(133, 21);
+            this.startStopSelect.TabIndex = 37;
+            this.startStopSelect.SelectedIndexChanged += new System.EventHandler(this.startStopSelect_SelectedIndexChanged);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(681, 535);
+            this.Controls.Add(this.startStopSelect);
+            this.Controls.Add(this.label6);
             this.Controls.Add(this.globalDelay);
             this.Controls.Add(this.startStopBtn);
             this.Controls.Add(this.scLbl);
@@ -426,9 +449,9 @@
             this.Controls.Add(this.positionList);
             this.Controls.Add(this.addRowBtn);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.label2);
+            this.Controls.Add(this.topLabel);
             this.Controls.Add(this.globalDelayLabel);
-            this.Controls.Add(this.checkBox1);
+            this.Controls.Add(this.enableStartStopBtn);
             this.Name = "Form1";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
@@ -445,10 +468,10 @@
 
         #endregion
 
-        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.CheckBox enableStartStopBtn;
         private System.Windows.Forms.Label globalDelayLabel;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label topLabel;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button addRowBtn;
         private System.Windows.Forms.ListBox positionList;
@@ -479,6 +502,8 @@
         private System.Windows.Forms.Label scLbl;
         private System.Windows.Forms.Button startStopBtn;
         private System.Windows.Forms.NumericUpDown globalDelay;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.ComboBox startStopSelect;
     }
 }
 
