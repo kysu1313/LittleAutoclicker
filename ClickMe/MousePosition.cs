@@ -9,8 +9,10 @@ using static ClickMe.KeyCodes;
 
 namespace ClickMe
 {
+    [Serializable]
     public class MousePosition
     {
+        public Guid id;
         public String label;
         public int x;
         public int y;
@@ -24,6 +26,7 @@ namespace ClickMe
             bool isRightClick, bool isDoubleClick, VirtualKeyCode? modifier = null, 
             Key? keyModifier = null, bool useModifier = false)
         {
+            this.id = Guid.NewGuid();
             this.label = label;
             this.x = x;
             this.y = y;

@@ -28,6 +28,23 @@ namespace ClickMe
             this.globalDelay = globalDelay;
         }
 
+        public PositionPopup(MousePosition position)
+        {
+            InitializeComponent();
+            this.xP = position.x;
+            this.yP = position.y;
+            this.label = position.label;
+            this.delay = position.delay;
+
+            positionLabel.Text = position.label;
+            positionDelay.Text = position.delay.ToString();
+            xValueLabel.Text = position.x.ToString();
+            yValueLabel.Text = position.y.ToString();
+            clickModifier.SelectedItem = position.modifier;
+            rightClick.Checked = position.isRightClick;
+            doubleClick.Checked = position.isDoubleClick;
+        }
+
         private void PositionPopup_Load(object sender, EventArgs e)
         {
             popupBackgroundWorker.RunWorkerAsync();
@@ -119,7 +136,16 @@ namespace ClickMe
 
             MousePosition mp = new MousePosition(label, (int)xP, (int)yP, (int)delay,
                 rightClick.Checked, doubleClick.Checked, keyModifier, null, useModifier);
-            if (PositionHelper.addItem(mp))
+            
+            var exists = PositionHelper.positions.Any(x => x.id == mp.id);
+
+            if (exists)
+            {
+                PositionHelper.updateItem(mp);
+                this.Close();
+                return;
+            }
+            else if (PositionHelper.addItem(mp))
             {
                 this.Close();
                 return;

@@ -64,6 +64,7 @@
     <Compile Include="KeyboardListener.cs" />
     <Compile Include="KeyCodes.cs" />
     <Compile Include="MouseHelper.cs" />
+    <Compile Include="MouseHelperAdv.cs" />
     <Compile Include="MouseHook.cs" />
     <Compile Include="MousePosition.cs" />
     <Compile Include="PositionHelper.cs" />

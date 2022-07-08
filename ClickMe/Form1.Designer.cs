@@ -65,12 +65,21 @@
             this.startStopBtn = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
             this.startStopSelect = new System.Windows.Forms.ComboBox();
+            this.customRecordBtn = new System.Windows.Forms.ComboBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.loadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.globalModifierKey = new System.Windows.Forms.ComboBox();
+            this.useGlobalModifier = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.positionModifier)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.globalDelay)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repeatCount)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.hrSelect)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.mnSelect)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.scSelect)).BeginInit();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // enableStartStopBtn
@@ -78,7 +87,7 @@
             this.enableStartStopBtn.AutoSize = true;
             this.enableStartStopBtn.Checked = true;
             this.enableStartStopBtn.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.enableStartStopBtn.Location = new System.Drawing.Point(53, 143);
+            this.enableStartStopBtn.Location = new System.Drawing.Point(50, 267);
             this.enableStartStopBtn.Name = "enableStartStopBtn";
             this.enableStartStopBtn.Size = new System.Drawing.Size(132, 17);
             this.enableStartStopBtn.TabIndex = 0;
@@ -89,7 +98,7 @@
             // 
             this.globalDelayLabel.AutoSize = true;
             this.globalDelayLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.globalDelayLabel.Location = new System.Drawing.Point(50, 108);
+            this.globalDelayLabel.Location = new System.Drawing.Point(47, 182);
             this.globalDelayLabel.Name = "globalDelayLabel";
             this.globalDelayLabel.Size = new System.Drawing.Size(89, 13);
             this.globalDelayLabel.TabIndex = 3;
@@ -138,14 +147,14 @@
             this.positionList.HorizontalScrollbar = true;
             this.positionList.Location = new System.Drawing.Point(290, 134);
             this.positionList.Name = "positionList";
-            this.positionList.Size = new System.Drawing.Size(351, 368);
+            this.positionList.Size = new System.Drawing.Size(351, 433);
             this.positionList.TabIndex = 8;
             this.positionList.SelectedIndexChanged += new System.EventHandler(this.positionList_SelectedIndexChanged_1);
             // 
             // randomizeDelays
             // 
             this.randomizeDelays.AutoSize = true;
-            this.randomizeDelays.Location = new System.Drawing.Point(53, 179);
+            this.randomizeDelays.Location = new System.Drawing.Point(50, 303);
             this.randomizeDelays.Name = "randomizeDelays";
             this.randomizeDelays.Size = new System.Drawing.Size(114, 17);
             this.randomizeDelays.TabIndex = 9;
@@ -162,7 +171,7 @@
             "25%",
             "50%",
             "100%"});
-            this.delayPercentModifier.Location = new System.Drawing.Point(186, 175);
+            this.delayPercentModifier.Location = new System.Drawing.Point(183, 299);
             this.delayPercentModifier.Name = "delayPercentModifier";
             this.delayPercentModifier.Size = new System.Drawing.Size(61, 21);
             this.delayPercentModifier.TabIndex = 12;
@@ -171,7 +180,7 @@
             // randomizePositions
             // 
             this.randomizePositions.AutoSize = true;
-            this.randomizePositions.Location = new System.Drawing.Point(53, 222);
+            this.randomizePositions.Location = new System.Drawing.Point(50, 346);
             this.randomizePositions.Name = "randomizePositions";
             this.randomizePositions.Size = new System.Drawing.Size(124, 17);
             this.randomizePositions.TabIndex = 11;
@@ -191,7 +200,7 @@
             // 
             // positionModifier
             // 
-            this.positionModifier.Location = new System.Drawing.Point(186, 219);
+            this.positionModifier.Location = new System.Drawing.Point(183, 343);
             this.positionModifier.Maximum = new decimal(new int[] {
             1000,
             0,
@@ -209,7 +218,7 @@
             // 
             // globalDelay
             // 
-            this.globalDelay.Location = new System.Drawing.Point(167, 103);
+            this.globalDelay.Location = new System.Drawing.Point(164, 177);
             this.globalDelay.Maximum = new decimal(new int[] {
             1000,
             0,
@@ -218,9 +227,8 @@
             this.globalDelay.Name = "globalDelay";
             this.globalDelay.Size = new System.Drawing.Size(80, 20);
             this.globalDelay.TabIndex = 35;
-            this.randomPositionToolTip.SetToolTip(this.globalDelay, "Click positions are modified by a max of this many pixels.");
             this.globalDelay.Value = new decimal(new int[] {
-            2,
+            500,
             0,
             0,
             0});
@@ -232,17 +240,16 @@
             "Until Stopped (F6)",
             "For number of loops",
             "Until specified time"});
-            this.repeatFor.Location = new System.Drawing.Point(128, 260);
+            this.repeatFor.Location = new System.Drawing.Point(125, 384);
             this.repeatFor.Name = "repeatFor";
             this.repeatFor.Size = new System.Drawing.Size(119, 21);
             this.repeatFor.TabIndex = 24;
-            this.randomDelayToolTip.SetToolTip(this.repeatFor, "Delays are modified by this percentage.");
             this.repeatFor.SelectedIndexChanged += new System.EventHandler(this.repeatFor_SelectedIndexChanged);
             // 
             // beginMouseRecording
             // 
             this.beginMouseRecording.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.25F);
-            this.beginMouseRecording.Location = new System.Drawing.Point(53, 387);
+            this.beginMouseRecording.Location = new System.Drawing.Point(50, 511);
             this.beginMouseRecording.Name = "beginMouseRecording";
             this.beginMouseRecording.Size = new System.Drawing.Size(194, 29);
             this.beginMouseRecording.TabIndex = 15;
@@ -254,7 +261,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.25F);
-            this.label1.Location = new System.Drawing.Point(55, 419);
+            this.label1.Location = new System.Drawing.Point(52, 543);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(30, 20);
             this.label1.TabIndex = 16;
@@ -264,7 +271,7 @@
             // 
             this.xPosition.AutoSize = true;
             this.xPosition.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.25F);
-            this.xPosition.Location = new System.Drawing.Point(96, 419);
+            this.xPosition.Location = new System.Drawing.Point(93, 543);
             this.xPosition.Name = "xPosition";
             this.xPosition.Size = new System.Drawing.Size(49, 20);
             this.xPosition.TabIndex = 17;
@@ -275,7 +282,7 @@
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.25F);
-            this.label5.Location = new System.Drawing.Point(161, 419);
+            this.label5.Location = new System.Drawing.Point(158, 543);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(29, 20);
             this.label5.TabIndex = 18;
@@ -285,7 +292,7 @@
             // 
             this.yPosition.AutoSize = true;
             this.yPosition.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.25F);
-            this.yPosition.Location = new System.Drawing.Point(196, 419);
+            this.yPosition.Location = new System.Drawing.Point(193, 543);
             this.yPosition.Name = "yPosition";
             this.yPosition.Size = new System.Drawing.Size(49, 20);
             this.yPosition.TabIndex = 19;
@@ -294,7 +301,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(50, 263);
+            this.label4.Location = new System.Drawing.Point(47, 387);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(72, 13);
             this.label4.TabIndex = 23;
@@ -314,7 +321,7 @@
             // repeatSelection
             // 
             this.repeatSelection.AutoSize = true;
-            this.repeatSelection.Location = new System.Drawing.Point(50, 305);
+            this.repeatSelection.Location = new System.Drawing.Point(47, 429);
             this.repeatSelection.Name = "repeatSelection";
             this.repeatSelection.Size = new System.Drawing.Size(42, 13);
             this.repeatSelection.TabIndex = 26;
@@ -323,7 +330,7 @@
             // 
             // repeatCount
             // 
-            this.repeatCount.Location = new System.Drawing.Point(128, 303);
+            this.repeatCount.Location = new System.Drawing.Point(125, 427);
             this.repeatCount.Name = "repeatCount";
             this.repeatCount.Size = new System.Drawing.Size(119, 20);
             this.repeatCount.TabIndex = 27;
@@ -331,7 +338,7 @@
             // 
             // hrSelect
             // 
-            this.hrSelect.Location = new System.Drawing.Point(72, 338);
+            this.hrSelect.Location = new System.Drawing.Point(69, 462);
             this.hrSelect.Name = "hrSelect";
             this.hrSelect.Size = new System.Drawing.Size(44, 20);
             this.hrSelect.TabIndex = 28;
@@ -339,7 +346,7 @@
             // 
             // mnSelect
             // 
-            this.mnSelect.Location = new System.Drawing.Point(144, 338);
+            this.mnSelect.Location = new System.Drawing.Point(141, 462);
             this.mnSelect.Name = "mnSelect";
             this.mnSelect.Size = new System.Drawing.Size(45, 20);
             this.mnSelect.TabIndex = 29;
@@ -348,7 +355,7 @@
             // 
             // scSelect
             // 
-            this.scSelect.Location = new System.Drawing.Point(217, 338);
+            this.scSelect.Location = new System.Drawing.Point(214, 462);
             this.scSelect.Name = "scSelect";
             this.scSelect.Size = new System.Drawing.Size(48, 20);
             this.scSelect.TabIndex = 30;
@@ -357,7 +364,7 @@
             // hrLbl
             // 
             this.hrLbl.AutoSize = true;
-            this.hrLbl.Location = new System.Drawing.Point(50, 340);
+            this.hrLbl.Location = new System.Drawing.Point(47, 464);
             this.hrLbl.Name = "hrLbl";
             this.hrLbl.Size = new System.Drawing.Size(18, 13);
             this.hrLbl.TabIndex = 31;
@@ -367,7 +374,7 @@
             // mnLbl
             // 
             this.mnLbl.AutoSize = true;
-            this.mnLbl.Location = new System.Drawing.Point(122, 340);
+            this.mnLbl.Location = new System.Drawing.Point(119, 464);
             this.mnLbl.Name = "mnLbl";
             this.mnLbl.Size = new System.Drawing.Size(19, 13);
             this.mnLbl.TabIndex = 32;
@@ -377,7 +384,7 @@
             // scLbl
             // 
             this.scLbl.AutoSize = true;
-            this.scLbl.Location = new System.Drawing.Point(195, 340);
+            this.scLbl.Location = new System.Drawing.Point(192, 464);
             this.scLbl.Name = "scLbl";
             this.scLbl.Size = new System.Drawing.Size(17, 13);
             this.scLbl.TabIndex = 33;
@@ -401,7 +408,7 @@
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.label6.Location = new System.Drawing.Point(50, 34);
+            this.label6.Location = new System.Drawing.Point(47, 45);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(137, 13);
             this.label6.TabIndex = 36;
@@ -410,17 +417,93 @@
             // startStopSelect
             // 
             this.startStopSelect.FormattingEnabled = true;
-            this.startStopSelect.Location = new System.Drawing.Point(52, 50);
+            this.startStopSelect.Location = new System.Drawing.Point(49, 61);
             this.startStopSelect.Name = "startStopSelect";
             this.startStopSelect.Size = new System.Drawing.Size(133, 21);
             this.startStopSelect.TabIndex = 37;
             this.startStopSelect.SelectedIndexChanged += new System.EventHandler(this.startStopSelect_SelectedIndexChanged);
             // 
+            // customRecordBtn
+            // 
+            this.customRecordBtn.FormattingEnabled = true;
+            this.customRecordBtn.Location = new System.Drawing.Point(48, 101);
+            this.customRecordBtn.Name = "customRecordBtn";
+            this.customRecordBtn.Size = new System.Drawing.Size(133, 21);
+            this.customRecordBtn.TabIndex = 39;
+            this.customRecordBtn.SelectedIndexChanged += new System.EventHandler(this.customRecordBtn_SelectedIndexChanged);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            this.label2.Location = new System.Drawing.Point(46, 85);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(114, 13);
+            this.label2.TabIndex = 38;
+            this.label2.Text = "Custom RecordButton:";
+            // 
+            // menuStrip1
+            // 
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.fileToolStripMenuItem});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(681, 24);
+            this.menuStrip1.TabIndex = 41;
+            this.menuStrip1.Text = "menuStrip1";
+            // 
+            // fileToolStripMenuItem
+            // 
+            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.saveToolStripMenuItem,
+            this.loadToolStripMenuItem});
+            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
+            this.fileToolStripMenuItem.Text = "File";
+            // 
+            // saveToolStripMenuItem
+            // 
+            this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.saveToolStripMenuItem.Text = "Save";
+            this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
+            // 
+            // loadToolStripMenuItem
+            // 
+            this.loadToolStripMenuItem.Name = "loadToolStripMenuItem";
+            this.loadToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.loadToolStripMenuItem.Text = "Load";
+            this.loadToolStripMenuItem.Click += new System.EventHandler(this.loadToolStripMenuItem_Click);
+            // 
+            // globalModifierKey
+            // 
+            this.globalModifierKey.FormattingEnabled = true;
+            this.globalModifierKey.Location = new System.Drawing.Point(162, 150);
+            this.globalModifierKey.Name = "globalModifierKey";
+            this.globalModifierKey.Size = new System.Drawing.Size(82, 21);
+            this.globalModifierKey.TabIndex = 43;
+            this.globalModifierKey.SelectedIndexChanged += new System.EventHandler(this.globalModifierKey_SelectedIndexChanged);
+            // 
+            // useGlobalModifier
+            // 
+            this.useGlobalModifier.AutoSize = true;
+            this.useGlobalModifier.Location = new System.Drawing.Point(48, 152);
+            this.useGlobalModifier.Name = "useGlobalModifier";
+            this.useGlobalModifier.Size = new System.Drawing.Size(96, 17);
+            this.useGlobalModifier.TabIndex = 44;
+            this.useGlobalModifier.Text = "Global Modifier";
+            this.useGlobalModifier.UseVisualStyleBackColor = true;
+            this.useGlobalModifier.CheckedChanged += new System.EventHandler(this.useGlobalModifier_CheckedChanged);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(681, 535);
+            this.ClientSize = new System.Drawing.Size(681, 601);
+            this.Controls.Add(this.useGlobalModifier);
+            this.Controls.Add(this.globalModifierKey);
+            this.Controls.Add(this.customRecordBtn);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.startStopSelect);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.globalDelay);
@@ -452,6 +535,8 @@
             this.Controls.Add(this.topLabel);
             this.Controls.Add(this.globalDelayLabel);
             this.Controls.Add(this.enableStartStopBtn);
+            this.Controls.Add(this.menuStrip1);
+            this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form1";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
@@ -461,6 +546,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.hrSelect)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.mnSelect)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.scSelect)).EndInit();
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -504,6 +591,14 @@
         private System.Windows.Forms.NumericUpDown globalDelay;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.ComboBox startStopSelect;
+        private System.Windows.Forms.ComboBox customRecordBtn;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem loadToolStripMenuItem;
+        private System.Windows.Forms.ComboBox globalModifierKey;
+        private System.Windows.Forms.CheckBox useGlobalModifier;
     }
 }
 
