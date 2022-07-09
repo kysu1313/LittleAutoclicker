@@ -186,11 +186,6 @@
             // clickModifier
             // 
             this.clickModifier.FormattingEnabled = true;
-            this.clickModifier.Items.AddRange(new object[] {
-            "None",
-            "Shift",
-            "Alt",
-            "Ctrl"});
             this.clickModifier.Location = new System.Drawing.Point(163, 147);
             this.clickModifier.Name = "clickModifier";
             this.clickModifier.Size = new System.Drawing.Size(121, 21);

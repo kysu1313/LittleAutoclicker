@@ -45,6 +45,7 @@ namespace ClickMe
         private short currentGlobalModifierKey;
         private bool globalModifierEnabled = false;
         private bool globalModifierIsDown = false;
+        private bool recordBtnEnabled = true;
 
         private string forNumberOfLoops = "For number of loops";
         private string untilSpecifiedTime = "Until specified time";
@@ -67,6 +68,7 @@ namespace ClickMe
         private void Form1_Load(object sender, EventArgs e)
         {
             currIndex = 0;
+            customStartStop = Key.F7;
             loadToolStripMenuItem.Click += new EventHandler(loadFile);
             globalModifierKey.DataSource = Enum.GetValues(typeof(Key));
             startStopSelect.DataSource = Enum.GetValues(typeof(Key));
@@ -74,7 +76,9 @@ namespace ClickMe
             customRecordBtn.DataSource = Enum.GetValues(typeof(Key));
             customRecordBtn.SelectedItem = Key.F7;
             positionList.DoubleClick += PositionList_DoubleClick;
+            positionList.HeaderStyle = ColumnHeaderStyle.Nonclickable;
             CheckForIllegalCrossThreadCalls = false;
+            beginMouseRecording.Text = recordBtnOffTxt;
             Thread AC = new Thread(AutoClick);
             backgroundWorker1.RunWorkerAsync();
             AC.Start();
@@ -82,11 +86,11 @@ namespace ClickMe
 
         private void PositionList_DoubleClick(object sender, EventArgs e)
         {
-            var row = positionList.SelectedItem;
+            var row = positionList.SelectedItems[0].Tag;
             if (row != null)
             {
-                var lvi = (ListViewItem)row;
-                var formPopup = new PositionPopup((MousePosition)lvi.Tag);
+                var lvi = (MousePosition)row;
+                var formPopup = new PositionPopup(lvi);
                 isModalOpen = true;
                 formPopup.FormClosing += new FormClosingEventHandler(onPopupClose);
                 formPopup.Show(this);
@@ -107,9 +111,10 @@ namespace ClickMe
         }
 
         /*
-         *  Until Stopped (F6)
-         *  For number of loops
-         *  Until specified time
+         *  Repeat:
+         *      Until Stopped (F6)
+         *      For number of loops
+         *      Until specified time
          */
         private void AutoClick()
         {
@@ -208,7 +213,7 @@ namespace ClickMe
                 }
                 else
                 {
-                    if (globalModifierEnabled)
+                    if (globalModifierEnabled && !isModalOpen)
                     {
                         triggerGlobalModifier(false);
                     }
@@ -216,6 +221,10 @@ namespace ClickMe
                 }
                 updateBtnColorAndText();
                 clickCount = 0;
+            }
+            if (String.Equals(args.Key.ToString(), customRecord.ToString()))
+            {
+                recordButtonClickAction(true);
             }
         }
 
@@ -275,9 +284,10 @@ namespace ClickMe
                 }
             }
 
-            if (mousePosition.useModifier)
+            if (mousePosition.useModifier && code != null)
             {
-                MouseHelper.SendKeyCommand((KeyCode)virtualKeyToKeyCode(mousePosition.modifier), MouseHelper.KEYEVENT_KEYUP);
+                MouseHelper.SendKeyCommand((KeyCode)code, MouseHelper.KEYEVENT_KEYUP);
+                //MouseHelper.SendKeyCommand((KeyCode)virtualKeyToKeyCode(mousePosition.modifier), MouseHelper.KEYEVENT_KEYUP);
                 //inputSimulator.Keyboard.KeyUp(VirtualKeyCode.SHIFT);
             }
 
@@ -384,7 +394,6 @@ namespace ClickMe
         {
             var lbl = "";
             var md = "";
-            var listItem = new ListViewItem();
             if (string.IsNullOrEmpty(x.label))
             {
                 lbl = positionList.Items.Count + 1 + "";
@@ -403,30 +412,54 @@ namespace ClickMe
                 md += " + " + x.modifier.ToString();
             }
 
-            String txt = $" - {lbl}, X: {x.x}, Y: {x.y}, Delay: {x.delay} (ms) {md}";
-            listItem.Text = txt;
+            var clickType = x.isDoubleClick ? "D" : x.isRightClick ? "R" : "L";
+            string[] row = { $"{lbl}", $"{x.x}" , $"{x.y}" , $"{x.delay}", $"{clickType}", $"{md}" };
+            var listItem = new ListViewItem(row);
             listItem.Tag = x;
             positionList.Items.Add(listItem);
         }
 
+        /// <summary>
+        /// Delete single row item
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void button2_Click(object sender, EventArgs e)
         {
-            var item = positionList.SelectedItem;
+            var selectedItem = positionList.SelectedItems[0];
+            var item = selectedItem.Tag;
             if (item != null)
             {
                 var pos = (MousePosition)item;
                 PositionHelper.removeItem(pos.id);
-                positionList.Items.Remove(item);
+                positionList.Items.Remove(selectedItem);
             }
         }
 
+        /// <summary>
+        /// Begin key and mouse recording
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void beginMouseRecording_Click(object sender, EventArgs e)
         {
+            recordButtonClickAction(false);
+        }
+
+        /// <summary>
+        /// Start / Stop mouse click recording.
+        /// Hooks / Un-hooks mouse
+        /// </summary>
+        /// <param name="isKeyPress"></param>
+        private void recordButtonClickAction(bool isKeyPress)
+        {
+            if (!recordBtnEnabled || isModalOpen) return;
             isRecording = !isRecording;
 
             if (isRecording)
             {
                 beginMouseRecording.Text = recordBtnOnTxt;
+                timer.Start();
                 recordMouse();
             }
             else
@@ -434,8 +467,9 @@ namespace ClickMe
                 beginMouseRecording.Text = recordBtnOffTxt;
                 mouseHook.UnHook();
                 timer.Stop();
-                Thread.Sleep(20);
-                PositionHelper.positions.Remove(PositionHelper.positions.Last());
+                Thread.Sleep(1);
+                if (!isKeyPress)
+                    PositionHelper.positions.Remove(PositionHelper.positions.Last());
                 updatePositions();
             }
         }
@@ -451,17 +485,11 @@ namespace ClickMe
 
         private void mh_MouseDownEvent(object sender, MouseEventArgs e)
         {
-            bool isFirstClick = false;
-            if (!timer.IsRunning)
-            {
-                timer.Start();
-                isFirstClick = true;
-            }
             string sText = "";
             int dly = (int)timer.ElapsedMilliseconds - lastElapsedTime;
             lastElapsedTime = (int)timer.ElapsedMilliseconds;
 
-            if (!isFirstClick && dly <= 2)
+            if (dly <= 2)
             {
                 return; 
             }
@@ -493,11 +521,17 @@ namespace ClickMe
                     isModified = true;
                 }
 
-                var mp = new MousePosition(sText, x, y, dly, isRightClk, false, 
-                    KeyToVirtualKeyCode(modifierKey), modifierKey, isModified);
+                var mp = new MousePosition(sText, x, y, dly, isRightClk, false,
+                    convertKeyCode(modifierKey), modifierKey, isModified);
                 PositionHelper.addItem(mp);
                 appendClickPositionLabel(mp, modStr);
             }
+        }
+
+        private static VirtualKeyCode? convertKeyCode(Key? code)
+        {
+            if (!code.HasValue) return null;
+            return (VirtualKeyCode)KeyInterop.VirtualKeyFromKey(code.Value);
         }
 
         private static KeyCode? virtualKeyToKeyCode(VirtualKeyCode? key) => key switch
@@ -593,6 +627,8 @@ namespace ClickMe
             if (csss == customRecord)
             {
                 MessageBox.Show("You're already using this key for the record button, please choose another.", "Warning");
+                startStopSelect.SelectedItem = customStartStop;
+                startStopSelect.Text = customStartStop.ToString();
                 return;
             }
             customStartStop = csss;
@@ -624,8 +660,8 @@ namespace ClickMe
 
         private void updateRecordLabels(String keyLbl)
         {
-            recordBtnOffTxt = $"Stop Recording ({customRecord})";
-            recordBtnOnTxt = $"Start Recording ({customRecord})";
+            recordBtnOffTxt = $"Start Recording ({customRecord})";
+            recordBtnOnTxt = $"Stop Recording ({customRecord})";
         }
 
         private void globalModifierKey_SelectedIndexChanged(object sender, EventArgs e)
@@ -636,6 +672,11 @@ namespace ClickMe
         private void useGlobalModifier_CheckedChanged(object sender, EventArgs e)
         {
             globalModifierEnabled = (bool)useGlobalModifier.Checked;
+        }
+
+        private void enableRecordBtn_CheckedChanged(object sender, EventArgs e)
+        {
+            recordBtnEnabled = enableRecordBtn.Checked;
         }
 
         /// <summary>
@@ -666,7 +707,6 @@ namespace ClickMe
         }
 
         private OpenFileDialog ofd;
-        private Button selectBtn;
 
         /// <summary>
         /// Load a saved click file
@@ -733,7 +773,6 @@ namespace ClickMe
         private void positionList_SelectedIndexChanged(object sender, EventArgs e) { }
         private void label1_Click(object sender, EventArgs e) { }
         private void positionList_SelectedIndexChanged_1(object sender, EventArgs e) { }
-
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e) { }
         private void label4_Click(object sender, EventArgs e) { }
         private void mh_MouseClickEvent(object sender, MouseEventArgs e) { }

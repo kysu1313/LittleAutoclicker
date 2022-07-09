@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
+using WindowsInput.Native;
 
 namespace ClickMe
 {
@@ -27,20 +29,53 @@ namespace ClickMe
                 positions.Remove(pos);
         }
 
-        public static void updateItem(MousePosition pos)
+        public static void updateItem(MousePosition pos, String label, int x, int y, int delay,
+            bool isRightClick, bool isDoubleClick, VirtualKeyCode? modifier = null,
+            Key? keyModifier = null, bool useModifier = false, bool isUpdate = false)
         {
             var cur = positions.FirstOrDefault(x => x.id == pos.id);
             if (cur != null)
             {
-                cur.x = pos.x;
-                cur.y = pos.y;
-                cur.delay = pos.delay;
-                cur.label = pos.label;
-                cur.isDoubleClick = pos.isDoubleClick;
-                cur.isRightClick = pos.isRightClick;
-                cur.modifier = pos.modifier;
-                cur.useModifier = pos.useModifier;
+                cur.x = x;
+                cur.y = y;
+                cur.delay = delay;
+                cur.label = label;
+                cur.isDoubleClick = isDoubleClick;
+                cur.isRightClick = isRightClick;
+                cur.modifier = modifier ?? null;
+                cur.useModifier = useModifier;
             }
         }
     }
 }
+
+
+//ColumnHeader columnHeader1 = new ColumnHeader();
+//columnHeader1.Text = "Label";
+//columnHeader1.TextAlign = HorizontalAlignment.Left;
+//columnHeader1.Width = 146;
+
+//ColumnHeader columnHeader2 = new ColumnHeader();
+//columnHeader2.Text = "X";
+//columnHeader2.TextAlign = HorizontalAlignment.Center;
+//columnHeader2.Width = 50;
+
+//ColumnHeader columnHeader3 = new ColumnHeader();
+//columnHeader2.Text = "Y";
+//columnHeader2.TextAlign = HorizontalAlignment.Center;
+//columnHeader2.Width = 50;
+
+//ColumnHeader columnHeader4 = new ColumnHeader();
+//columnHeader2.Text = "Delay";
+//columnHeader2.TextAlign = HorizontalAlignment.Center;
+//columnHeader2.Width = 50;
+
+//ColumnHeader columnHeader5 = new ColumnHeader();
+//columnHeader2.Text = "Type";
+//columnHeader2.TextAlign = HorizontalAlignment.Center;
+//columnHeader2.Width = 50;
+
+//ColumnHeader columnHeader6 = new ColumnHeader();
+//columnHeader2.Text = "Mod";
+//columnHeader2.TextAlign = HorizontalAlignment.Center;
+//columnHeader2.Width = 150;

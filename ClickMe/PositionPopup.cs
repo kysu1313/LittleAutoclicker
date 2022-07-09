@@ -21,16 +21,19 @@ namespace ClickMe
         private String label;
         private int? delay;
         private int globalDelay;
+        private MousePosition currPos;
 
         public PositionPopup(int globalDelay)
         {
             InitializeComponent();
+            clickModifier.DataSource = Enum.GetValues(typeof(Key));
             this.globalDelay = globalDelay;
         }
 
         public PositionPopup(MousePosition position)
         {
             InitializeComponent();
+            clickModifier.DataSource = Enum.GetValues(typeof(Key));
             this.xP = position.x;
             this.yP = position.y;
             this.label = position.label;
@@ -43,6 +46,7 @@ namespace ClickMe
             clickModifier.SelectedItem = position.modifier;
             rightClick.Checked = position.isRightClick;
             doubleClick.Checked = position.isDoubleClick;
+            currPos = position;
         }
 
         private void PositionPopup_Load(object sender, EventArgs e)
@@ -134,14 +138,24 @@ namespace ClickMe
                 useModifier = res.Item2;
             }
 
-            MousePosition mp = new MousePosition(label, (int)xP, (int)yP, (int)delay,
-                rightClick.Checked, doubleClick.Checked, keyModifier, null, useModifier);
+            MousePosition mp = currPos;
+            if (currPos == null)
+            {
+                mp = new MousePosition(label, (int)xP, (int)yP, (int)delay,
+                    rightClick.Checked, doubleClick.Checked, keyModifier, null, useModifier);
+            }
             
             var exists = PositionHelper.positions.Any(x => x.id == mp.id);
 
             if (exists)
             {
-                PositionHelper.updateItem(mp);
+                if (keyModifier == null && mp.modifier != null)
+                {
+                    keyModifier = mp.modifier;
+                    useModifier = true;
+                }
+                PositionHelper.updateItem(mp, label, (int)xP, (int)yP, (int)delay, rightClick.Checked, 
+                    doubleClick.Checked, keyModifier, null, useModifier);
                 this.Close();
                 return;
             }
