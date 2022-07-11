@@ -35,9 +35,11 @@ namespace ClickMe
         private KeyboardListener KListener = new KeyboardListener();
         private MouseHook mouseHook = new MouseHook();
         private Stopwatch timer = new Stopwatch();
+        private Stopwatch clickTimer = new Stopwatch();
         private const String f6 = "F6";
         private Key? currentKeyPressed = null;
         private int clickCount = 0;
+        private int loopCount = 0;
         private Key? customStartStop = null;
         private Key? customRecord = null;
         private bool isModalOpen = false;
@@ -46,9 +48,12 @@ namespace ClickMe
         private bool globalModifierEnabled = false;
         private bool globalModifierIsDown = false;
         private bool recordBtnEnabled = true;
+        private bool globalDelayEnabled = false;
+        private int globalDelayValue = 0;
 
         private string forNumberOfLoops = "For number of loops";
         private string untilSpecifiedTime = "Until specified time";
+        private string forNumberOfClicks = "For number of clicks";
         private string startBtnTxt = "Start (F6)";
         private string stopBtnTxt = "Stop (F6)";
 
@@ -99,15 +104,48 @@ namespace ClickMe
 
         private void startStopBtn_Click(object sender, EventArgs e)
         {
+            startStopLoopAction();
+        }
+
+        private void startStopLoopAction()
+        {
             if (!click && PositionHelper.positions.Count < 1)
             {
                 var res = MessageBox.Show("You havn't added any clicks yet.", "Warning");
+                return;
+            }
+            else if (!click && isModalOpen)
+            {
+                MessageBox.Show("Please close the popup before running.", "Warning");
+                return;
+            }
+            else if (!click && isRecording)
+            {
+                MessageBox.Show("You need to stop recording first.", "Warning");
+                return;
             }
             else
             {
+                if (globalModifierEnabled && !isModalOpen)
+                {
+                    triggerGlobalModifier(false);
+                }
+                if (click)
+                {
+                    loopCount = 0;
+                    clickCount = 0;
+                }
                 click = !click;
+                if (clickTimer.IsRunning)
+                {
+                    clickTimer.Stop();
+                    clickTimer.Reset();
+                }
+                else
+                    clickTimer.Start();
             }
             updateBtnColorAndText();
+            clickCount = 0;
         }
 
         /*
@@ -126,7 +164,12 @@ namespace ClickMe
                     {
                         triggerGlobalModifier(true);
                     }
-                    if (string.Equals(repeatFor.Text, forNumberOfLoops) && checkValidClickCount())
+                    if (string.Equals(repeatFor.Text, forNumberOfLoops) && checkValidLoopCount())
+                    {
+                        executeClick(PositionHelper.positions[currIndex]);
+                        clickCount++;
+                    }
+                    else if (string.Equals(repeatFor.Text, forNumberOfClicks) && checkValidClickCount())
                     {
                         executeClick(PositionHelper.positions[currIndex]);
                         clickCount++;
@@ -136,7 +179,8 @@ namespace ClickMe
                         executeClick(PositionHelper.positions[currIndex]);
                         clickCount++;
                     }
-                    else
+                    else if (!string.Equals(repeatFor.Text, forNumberOfLoops) &&
+                        !string.Equals(repeatFor.Text, untilSpecifiedTime))
                     {
                         executeClick(PositionHelper.positions[currIndex]);
                     }
@@ -150,13 +194,37 @@ namespace ClickMe
             int minutes = Decimal.ToInt32(mnSelect.Value) * 60 * 1000;
             int seconds = Decimal.ToInt32(scSelect.Value) * 1000;
 
-            return timer.ElapsedMilliseconds < (hours + minutes + seconds);
+            if (clickTimer.ElapsedMilliseconds > (hours + minutes + seconds))
+            {
+                click = !click;
+                updateBtnColorAndText();
+                return false;
+            }
+            return true;
         }
 
         private bool checkValidClickCount()
         {
             int maxClicks = Decimal.ToInt32(repeatCount.Value);
-            return clickCount < maxClicks;
+            if (clickCount > maxClicks)
+            {
+                click = !click;
+                updateBtnColorAndText();
+                return false;
+            }
+            return true;
+        }
+
+        private bool checkValidLoopCount()
+        {
+            int maxLoops = Decimal.ToInt32(repeatLoopCount.Value);
+            if (loopCount > maxLoops)
+            {
+                click = !click;
+                updateBtnColorAndText();
+                return false;
+            }
+            return true;
         }
 
         private void triggerGlobalModifier(bool isPressDown)
@@ -203,24 +271,7 @@ namespace ClickMe
             //Console.WriteLine("key / mouse: " + args.Key.ToString());
             if (String.Equals(args.Key.ToString(), kcd))
             {
-                if (!click && isModalOpen)
-                {
-                    MessageBox.Show("Please close the popup before running.", "Warning");
-                }
-                else if (!click && isRecording)
-                {
-                    MessageBox.Show("You need to stop recording first.", "Warning");
-                }
-                else
-                {
-                    if (globalModifierEnabled && !isModalOpen)
-                    {
-                        triggerGlobalModifier(false);
-                    }
-                    click = !click;
-                }
-                updateBtnColorAndText();
-                clickCount = 0;
+                startStopLoopAction();
             }
             if (String.Equals(args.Key.ToString(), customRecord.ToString()))
             {
@@ -295,9 +346,17 @@ namespace ClickMe
             if (currIndex >= PositionHelper.positions.Count)
             {
                 currIndex = 0;
+                loopCount++;
             }
 
-            Thread.Sleep(mousePosition.delay);
+            if (globalDelayEnabled)
+            {
+                Thread.Sleep(globalDelayValue);
+            }
+            else
+            {
+                Thread.Sleep(mousePosition.delay);
+            }
             
         }
 
@@ -426,6 +485,7 @@ namespace ClickMe
         /// <param name="e"></param>
         private void button2_Click(object sender, EventArgs e)
         {
+            if (positionList.Items.Count == 0 || positionList.SelectedItems.Count == 0) return;
             var selectedItem = positionList.SelectedItems[0];
             var item = selectedItem.Tag;
             if (item != null)
@@ -583,6 +643,7 @@ namespace ClickMe
             
             if (res == DialogResult.Yes)
             {
+                currIndex = 0;
                 PositionHelper.positions.Clear();
                 positionList.Items.Clear();
             }
@@ -590,11 +651,29 @@ namespace ClickMe
 
         private void repeatFor_SelectedIndexChanged(object sender, EventArgs e)
         {
+            repeatCount.Visible = false;
+            repeatSelection.Visible = false;
+            repeatLoopCountLabel.Visible = false;
+            repeatLoopCount.Visible = false;
+            hrLbl.Visible = false;
+            mnLbl.Visible = false;
+            scLbl.Visible = false;
+            hrSelect.Visible = false;
+            mnSelect.Visible = false;
+            scSelect.Visible = false;
+
             if (string.Equals(repeatFor.Text, forNumberOfLoops, StringComparison.OrdinalIgnoreCase))
+            {
+                repeatLoopCountLabel.Text = "Total Loops: ";
+                repeatLoopCountLabel.Visible = true;
+                repeatLoopCount.Visible = true;
+            }
+            else if (string.Equals(repeatFor.Text, forNumberOfClicks, StringComparison.OrdinalIgnoreCase))
             {
                 repeatSelection.Text = "Total Clicks: ";
                 repeatSelection.Visible = true;
                 repeatCount.Visible = true;
+
             }
             else if (string.Equals(repeatFor.Text, untilSpecifiedTime, StringComparison.OrdinalIgnoreCase))
             {
@@ -642,11 +721,13 @@ namespace ClickMe
             if (crb== customStartStop)
             {
                 MessageBox.Show("You're already using this key to start and stop, please choose another.", "Warning");
+                customRecordBtn.SelectedItem = customRecord;
+                customRecordBtn.Text = customRecord.ToString();
                 return;
             }
             customRecord = crb;
             Console.WriteLine("record btn: " + customRecord.ToString());
-            updateRecordLabels(customStartStop.ToString());
+            updateRecordLabels(customRecord.ToString());
         }
 
         private void updateStartStopLabels(String keyLbl)
@@ -662,6 +743,7 @@ namespace ClickMe
         {
             recordBtnOffTxt = $"Start Recording ({customRecord})";
             recordBtnOnTxt = $"Stop Recording ({customRecord})";
+            beginMouseRecording.Text = recordBtnOffTxt;
         }
 
         private void globalModifierKey_SelectedIndexChanged(object sender, EventArgs e)
@@ -686,18 +768,13 @@ namespace ClickMe
         /// <param name="e"></param>
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            // Displays a SaveFileDialog so the user can save the Image
-            // assigned to Button2.
             SaveFileDialog saveFileDialog1 = new SaveFileDialog();
-            //saveFileDialog1.Filter = "JPeg Image|*.jpg|Bitmap Image|*.bmp|Gif Image|*.gif";
             saveFileDialog1.DefaultExt = "dat";
             saveFileDialog1.Title = "Save Clicks";
             saveFileDialog1.ShowDialog();
 
-            // If the file name is not an empty string open it for saving.
             if (saveFileDialog1.FileName != "")
             {
-                // Saves the Image via a FileStream created by the OpenFile method.
                 System.IO.FileStream fs =
                     (System.IO.FileStream)saveFileDialog1.OpenFile();
                 var bytes = ObjectArrayToByteArray(PositionHelper.positions);
@@ -721,6 +798,16 @@ namespace ClickMe
                 Filter = "Data files (*.dat)|*.dat",
                 Title = "Open text file"
             };
+        }
+
+        private void globalDelayCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            globalDelayEnabled = globalDelayCheckBox.Checked;
+        }
+
+        private void globalDelay_ValueChanged(object sender, EventArgs e)
+        {
+            globalDelayValue = Convert.ToInt32(globalDelay.Value);
         }
 
         private void loadFile(object sender, EventArgs e)
