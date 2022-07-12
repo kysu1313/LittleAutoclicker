@@ -50,6 +50,7 @@ namespace ClickMe
         private bool recordBtnEnabled = true;
         private bool globalDelayEnabled = false;
         private int globalDelayValue = 0;
+        private int delayRandomizer = 0;
 
         private string forNumberOfLoops = "For number of loops";
         private string untilSpecifiedTime = "Until specified time";
@@ -231,7 +232,7 @@ namespace ClickMe
         {
             if (isPressDown)
             {
-                currentGlobalModifierKey = (short)(Keys)KeyToKeys(globalModifier);
+                currentGlobalModifierKey = (short)(Keys)FormHelper.KeyToKeys(globalModifier);
                 MouseHelperAdv.SendKey(currentGlobalModifierKey, 0, false, true, false);
                 //MouseHelper.SendKeyCommand((KeyCode)KeyToKeyCode(globalModifier), MouseHelper.KEYEVENT_KEYDOWN);
                 globalModifierIsDown = true;
@@ -299,10 +300,10 @@ namespace ClickMe
             MouseHelper.POINT p = new MouseHelper.POINT(xp, yp);
             MouseHelper.ClientToScreen(Handle, ref p);
 
-            (var xx, var yy) = getRandIntTuple(xp, yp);
+            (var xx, var yy) = FormHelper.getRandIntTuple(xp, yp, randomizePositions.Checked, positionModifier.Value);
             MouseHelper.SetCursorPos(xx, yy);
 
-            var code = virtualKeyToKeyCode(mousePosition.modifier);
+            var code = FormHelper.virtualKeyToKeyCode(mousePosition.modifier);
 
             if (mousePosition.useModifier && code != null)
             {
@@ -349,47 +350,12 @@ namespace ClickMe
                 loopCount++;
             }
 
-            if (globalDelayEnabled)
-            {
-                Thread.Sleep(globalDelayValue);
-            }
-            else
-            {
-                Thread.Sleep(mousePosition.delay);
-            }
+            Thread.Sleep(FormHelper.getClickDelay(mousePosition, randomizeDelays.Checked, delayRandomizer, 
+                globalDelayEnabled, globalDelayValue));
             
         }
 
-        /// <summary>
-        /// Randomize the click positions by 'positionModifier' amount of pixels
-        /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        /// <returns></returns>
-        private (int,int) getRandIntTuple(int x, int y)
-        {
-            if (randomizePositions.Checked)
-            {
-                int seed = 2;
-                if (positionModifier.Value > 0)
-                {
-                    seed = Decimal.ToInt32(positionModifier.Value);
-                }
-                Random rndX = new Random();
-                Random rndY = new Random();
-                int rx = rndX.Next(0, seed);
-                int ry = rndX.Next(0, seed);
-                bool xPos = rndX.Next(1, 10) > 5;
-                bool yPos = rndY.Next(1, 10) > 5;
-                rx = xPos ? rx : -rx;
-                ry = yPos ? ry : -ry;
-
-                Console.WriteLine($"Random Val, x: {rx}, y: {ry} ");
-
-                return (x + rx, y + ry);
-            }
-            return (x, y);
-        }
+        
 
         // Set a global delay
         private void button1_Click(object sender, EventArgs e)
@@ -582,52 +548,11 @@ namespace ClickMe
                 }
 
                 var mp = new MousePosition(sText, x, y, dly, isRightClk, false,
-                    convertKeyCode(modifierKey), modifierKey, isModified);
+                    FormHelper.convertKeyCode(modifierKey), modifierKey, isModified);
                 PositionHelper.addItem(mp);
                 appendClickPositionLabel(mp, modStr);
             }
         }
-
-        private static VirtualKeyCode? convertKeyCode(Key? code)
-        {
-            if (!code.HasValue) return null;
-            return (VirtualKeyCode)KeyInterop.VirtualKeyFromKey(code.Value);
-        }
-
-        private static KeyCode? virtualKeyToKeyCode(VirtualKeyCode? key) => key switch
-        {
-            VirtualKeyCode.SHIFT => KeyCode.SHIFT,
-            VirtualKeyCode.MENU => KeyCode.ALT,
-            VirtualKeyCode.CONTROL => KeyCode.CONTROL,
-            _ => null,
-        };
-
-        private static VirtualKeyCode? KeyToVirtualKeyCode(Key? key) => key switch
-        {
-            Key.LeftShift => VirtualKeyCode.SHIFT,
-            Key.LeftAlt => VirtualKeyCode.MENU,
-            Key.LeftCtrl  => VirtualKeyCode.CONTROL,
-            _ => null,
-        };
-
-        private static Keys? KeyToKeys(Key? key) => key switch
-        {
-            Key.LeftShift => Keys.LShiftKey,
-            Key.LeftAlt => Keys.Alt,
-            Key.LeftCtrl => Keys.LControlKey,
-            _ => null,
-        };
-
-        private static KeyCode? KeyToKeyCode(Key? key) => key switch
-        {
-            Key.LeftShift => KeyCode.SHIFT,
-            Key.RightShift => KeyCode.SHIFT,
-            Key.LeftAlt => KeyCode.ALT,
-            Key.RightAlt => KeyCode.ALT,
-            Key.LeftCtrl => KeyCode.CONTROL,
-            Key.RightCtrl => KeyCode.CONTROL,
-            _ => null,
-        };
 
         private void mh_MouseMoveEvent(object sender, MouseEventArgs e)
         {
@@ -777,7 +702,7 @@ namespace ClickMe
             {
                 System.IO.FileStream fs =
                     (System.IO.FileStream)saveFileDialog1.OpenFile();
-                var bytes = ObjectArrayToByteArray(PositionHelper.positions);
+                var bytes = FormHelper.ObjectArrayToByteArray(PositionHelper.positions);
                 fs.Write(bytes, 0, bytes.Length);
                 fs.Close();
             }
@@ -803,11 +728,18 @@ namespace ClickMe
         private void globalDelayCheckBox_CheckedChanged(object sender, EventArgs e)
         {
             globalDelayEnabled = globalDelayCheckBox.Checked;
+            globalDelayValue = Convert.ToInt32(globalDelay.Value);
         }
 
         private void globalDelay_ValueChanged(object sender, EventArgs e)
         {
             globalDelayValue = Convert.ToInt32(globalDelay.Value);
+        }
+
+        private void delayPercentModifier_ValueChanged(object sender, EventArgs e)
+        {
+            int.TryParse(delayPercentModifier.Value.ToString(), out int val);
+            delayRandomizer = val;
         }
 
         private void loadFile(object sender, EventArgs e)
@@ -818,7 +750,7 @@ namespace ClickMe
                 {
                     var filePath = ofd.FileName;
                     var bytes = File.ReadAllBytes(filePath);
-                    var res = ByteArrayToObjectArray(bytes);
+                    var res = FormHelper.ByteArrayToObjectArray(bytes);
 
                     var ps = (List<MousePosition>)res;
                     PositionHelper.positions.Clear();
@@ -833,29 +765,6 @@ namespace ClickMe
             }
         }
 
-        private byte[] ObjectArrayToByteArray<T>(List<T> positions)
-        {
-            if (positions == null)
-                return null;
-
-            BinaryFormatter bf = new BinaryFormatter();
-            MemoryStream ms = new MemoryStream();
-            bf.Serialize(ms, positions);
-            return ms.ToArray();
-        }
-
-        // Convert a byte array to an Object
-        private Object ByteArrayToObjectArray(byte[] arrBytes)
-        {
-            MemoryStream memStream = new MemoryStream();
-            BinaryFormatter binForm = new BinaryFormatter();
-            memStream.Write(arrBytes, 0, arrBytes.Length);
-            memStream.Seek(0, SeekOrigin.Begin);
-            Object obj = (Object)binForm.Deserialize(memStream);
-
-            return obj;
-        }
-
         private void label2_Click(object sender, EventArgs e) { }
         private void positionList_SelectedIndexChanged(object sender, EventArgs e) { }
         private void label1_Click(object sender, EventArgs e) { }
@@ -865,5 +774,6 @@ namespace ClickMe
         private void mh_MouseClickEvent(object sender, MouseEventArgs e) { }
         private void mh_MouseUpEvent(object sender, MouseEventArgs e) { }
         private void numericUpDown2_ValueChanged(object sender, EventArgs e) { }
+        private void delayPercentModifier_SelectedIndexChanged(object sender, EventArgs e) { }
     }
 }

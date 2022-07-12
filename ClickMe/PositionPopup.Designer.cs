@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -46,6 +47,8 @@
             this.clickModifier = new System.Windows.Forms.ComboBox();
             this.rightClick = new System.Windows.Forms.CheckBox();
             this.doubleClick = new System.Windows.Forms.CheckBox();
+            this.overrideGlobalDelay = new System.Windows.Forms.CheckBox();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.SuspendLayout();
             // 
             // label1
@@ -114,6 +117,7 @@
             this.positionDelay.Name = "positionDelay";
             this.positionDelay.Size = new System.Drawing.Size(93, 20);
             this.positionDelay.TabIndex = 2;
+            this.toolTip1.SetToolTip(this.positionDelay, "Delay between clicks");
             // 
             // positionLabel
             // 
@@ -121,6 +125,7 @@
             this.positionLabel.Name = "positionLabel";
             this.positionLabel.Size = new System.Drawing.Size(236, 20);
             this.positionLabel.TabIndex = 1;
+            this.toolTip1.SetToolTip(this.positionLabel, "Click position label");
             this.positionLabel.TextChanged += new System.EventHandler(this.positionLabel_TextChanged);
             // 
             // button1
@@ -131,6 +136,7 @@
             this.button1.Size = new System.Drawing.Size(75, 43);
             this.button1.TabIndex = 3;
             this.button1.Text = "Save";
+            this.toolTip1.SetToolTip(this.button1, "Add to click position list");
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
@@ -190,6 +196,7 @@
             this.clickModifier.Name = "clickModifier";
             this.clickModifier.Size = new System.Drawing.Size(121, 21);
             this.clickModifier.TabIndex = 17;
+            this.toolTip1.SetToolTip(this.clickModifier, "A key that will be held during the click action");
             // 
             // rightClick
             // 
@@ -213,11 +220,24 @@
             this.doubleClick.Text = "Double Click";
             this.doubleClick.UseVisualStyleBackColor = true;
             // 
+            // overrideGlobalDelay
+            // 
+            this.overrideGlobalDelay.AutoSize = true;
+            this.overrideGlobalDelay.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.25F);
+            this.overrideGlobalDelay.Location = new System.Drawing.Point(262, 87);
+            this.overrideGlobalDelay.Name = "overrideGlobalDelay";
+            this.overrideGlobalDelay.Size = new System.Drawing.Size(145, 24);
+            this.overrideGlobalDelay.TabIndex = 20;
+            this.overrideGlobalDelay.Text = "Override Global";
+            this.toolTip1.SetToolTip(this.overrideGlobalDelay, "Override the global click delay if one is set");
+            this.overrideGlobalDelay.UseVisualStyleBackColor = true;
+            // 
             // PositionPopup
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(442, 416);
+            this.Controls.Add(this.overrideGlobalDelay);
             this.Controls.Add(this.doubleClick);
             this.Controls.Add(this.rightClick);
             this.Controls.Add(this.clickModifier);
@@ -263,5 +283,7 @@
         private System.Windows.Forms.ComboBox clickModifier;
         private System.Windows.Forms.CheckBox rightClick;
         private System.Windows.Forms.CheckBox doubleClick;
+        private System.Windows.Forms.CheckBox overrideGlobalDelay;
+        private System.Windows.Forms.ToolTip toolTip1;
     }
 }

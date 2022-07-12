@@ -22,10 +22,11 @@ namespace ClickMe
         public bool useModifier;
         public VirtualKeyCode? modifier;
         public bool isUpdate;
+        public bool overrideGlobalDelay;
 
         public MousePosition(String label, int x, int y, int delay, 
             bool isRightClick, bool isDoubleClick, VirtualKeyCode? modifier = null,
-            Key? keyModifier = null, bool useModifier = false, bool isUpdate = false)
+            Key? keyModifier = null, bool useModifier = false, bool isUpdate = false, bool overrideGlobalDelay = false)
         {
             this.id = Guid.NewGuid();
             this.label = label;
@@ -37,6 +38,7 @@ namespace ClickMe
             this.modifier = modifier;
             this.useModifier = useModifier;
             this.isUpdate = isUpdate;
+            this.overrideGlobalDelay = overrideGlobalDelay;
         }
     }
 }

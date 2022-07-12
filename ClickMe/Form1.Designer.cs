@@ -35,35 +35,36 @@
             this.label3 = new System.Windows.Forms.Label();
             this.addRowBtn = new System.Windows.Forms.Button();
             this.randomizeDelays = new System.Windows.Forms.CheckBox();
-            this.delayPercentModifier = new System.Windows.Forms.ComboBox();
             this.randomizePositions = new System.Windows.Forms.CheckBox();
             this.button2 = new System.Windows.Forms.Button();
             this.positionModifier = new System.Windows.Forms.NumericUpDown();
             this.randomPositionToolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.delayPercentModifier = new System.Windows.Forms.NumericUpDown();
             this.globalDelay = new System.Windows.Forms.NumericUpDown();
             this.randomDelayToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.repeatFor = new System.Windows.Forms.ComboBox();
             this.globalDelayToolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.globalDelayCheckBox = new System.Windows.Forms.CheckBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.hrSelect = new System.Windows.Forms.NumericUpDown();
+            this.mnSelect = new System.Windows.Forms.NumericUpDown();
+            this.scSelect = new System.Windows.Forms.NumericUpDown();
+            this.clearAllBtn = new System.Windows.Forms.Button();
+            this.startStopSelect = new System.Windows.Forms.ComboBox();
+            this.customRecordBtn = new System.Windows.Forms.ComboBox();
             this.beginMouseRecording = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.xPosition = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.yPosition = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
-            this.clearAllBtn = new System.Windows.Forms.Button();
             this.repeatSelection = new System.Windows.Forms.Label();
             this.repeatCount = new System.Windows.Forms.NumericUpDown();
-            this.hrSelect = new System.Windows.Forms.NumericUpDown();
-            this.mnSelect = new System.Windows.Forms.NumericUpDown();
-            this.scSelect = new System.Windows.Forms.NumericUpDown();
             this.hrLbl = new System.Windows.Forms.Label();
             this.mnLbl = new System.Windows.Forms.Label();
             this.scLbl = new System.Windows.Forms.Label();
             this.startStopBtn = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
-            this.startStopSelect = new System.Windows.Forms.ComboBox();
-            this.customRecordBtn = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -86,13 +87,13 @@
             this.repeatCountTT = new System.Windows.Forms.ToolTip(this.components);
             this.repeatLoopCount = new System.Windows.Forms.NumericUpDown();
             this.repeatLoopCountLabel = new System.Windows.Forms.Label();
-            this.globalDelayCheckBox = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.positionModifier)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.delayPercentModifier)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.globalDelay)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.repeatCount)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.hrSelect)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.mnSelect)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.scSelect)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repeatCount)).BeginInit();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.repeatLoopCount)).BeginInit();
             this.SuspendLayout();
@@ -107,6 +108,7 @@
             this.enableStartStopBtn.Size = new System.Drawing.Size(166, 17);
             this.enableStartStopBtn.TabIndex = 0;
             this.enableStartStopBtn.Text = "Enable F6 Start / Stop Button";
+            this.toolTip2.SetToolTip(this.enableStartStopBtn, "Enable / disable the Start / Stop features");
             this.enableStartStopBtn.UseVisualStyleBackColor = true;
             // 
             // backgroundWorker1
@@ -142,6 +144,7 @@
             this.addRowBtn.Size = new System.Drawing.Size(53, 34);
             this.addRowBtn.TabIndex = 7;
             this.addRowBtn.Text = "New";
+            this.toolTip1.SetToolTip(this.addRowBtn, "Manually add a new click");
             this.addRowBtn.UseVisualStyleBackColor = true;
             this.addRowBtn.Click += new System.EventHandler(this.addRowBtn_Click);
             // 
@@ -155,22 +158,6 @@
             this.randomizeDelays.Text = "Randomize Delays";
             this.randomDelayToolTip.SetToolTip(this.randomizeDelays, "Delays are modified by this percentage.");
             this.randomizeDelays.UseVisualStyleBackColor = true;
-            // 
-            // delayPercentModifier
-            // 
-            this.delayPercentModifier.FormattingEnabled = true;
-            this.delayPercentModifier.Items.AddRange(new object[] {
-            "1%",
-            "5%",
-            "10%",
-            "25%",
-            "50%",
-            "100%"});
-            this.delayPercentModifier.Location = new System.Drawing.Point(181, 253);
-            this.delayPercentModifier.Name = "delayPercentModifier";
-            this.delayPercentModifier.Size = new System.Drawing.Size(65, 21);
-            this.delayPercentModifier.TabIndex = 12;
-            this.randomDelayToolTip.SetToolTip(this.delayPercentModifier, "Delays are modified by this percentage.");
             // 
             // randomizePositions
             // 
@@ -191,6 +178,7 @@
             this.button2.Size = new System.Drawing.Size(37, 34);
             this.button2.TabIndex = 13;
             this.button2.Text = "X";
+            this.toolTip1.SetToolTip(this.button2, "Delete the selected click");
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
@@ -212,6 +200,20 @@
             0,
             0});
             // 
+            // delayPercentModifier
+            // 
+            this.delayPercentModifier.Location = new System.Drawing.Point(181, 254);
+            this.delayPercentModifier.Name = "delayPercentModifier";
+            this.delayPercentModifier.Size = new System.Drawing.Size(65, 20);
+            this.delayPercentModifier.TabIndex = 51;
+            this.randomPositionToolTip.SetToolTip(this.delayPercentModifier, "Randomize delays between clicks by this percent");
+            this.delayPercentModifier.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.delayPercentModifier.ValueChanged += new System.EventHandler(this.delayPercentModifier_ValueChanged);
+            // 
             // globalDelay
             // 
             this.globalDelay.Location = new System.Drawing.Point(166, 223);
@@ -223,6 +225,7 @@
             this.globalDelay.Name = "globalDelay";
             this.globalDelay.Size = new System.Drawing.Size(80, 20);
             this.globalDelay.TabIndex = 35;
+            this.globalDelayToolTip.SetToolTip(this.globalDelay, "Delay in ms");
             this.globalDelay.Value = new decimal(new int[] {
             500,
             0,
@@ -245,6 +248,78 @@
             this.repeatTT.SetToolTip(this.repeatFor, "Repeat loop modifiers");
             this.repeatFor.SelectedIndexChanged += new System.EventHandler(this.repeatFor_SelectedIndexChanged);
             // 
+            // globalDelayCheckBox
+            // 
+            this.globalDelayCheckBox.AutoSize = true;
+            this.globalDelayCheckBox.Location = new System.Drawing.Point(48, 224);
+            this.globalDelayCheckBox.Name = "globalDelayCheckBox";
+            this.globalDelayCheckBox.Size = new System.Drawing.Size(86, 17);
+            this.globalDelayCheckBox.TabIndex = 50;
+            this.globalDelayCheckBox.Text = "Global Delay";
+            this.globalDelayToolTip.SetToolTip(this.globalDelayCheckBox, "Enable a global delay (can be overridden for individual clicks)");
+            this.globalDelayCheckBox.UseVisualStyleBackColor = true;
+            this.globalDelayCheckBox.CheckedChanged += new System.EventHandler(this.globalDelayCheckBox_CheckedChanged);
+            // 
+            // hrSelect
+            // 
+            this.hrSelect.Location = new System.Drawing.Point(69, 453);
+            this.hrSelect.Name = "hrSelect";
+            this.hrSelect.Size = new System.Drawing.Size(44, 20);
+            this.hrSelect.TabIndex = 28;
+            this.toolTip1.SetToolTip(this.hrSelect, "Hours");
+            this.hrSelect.Visible = false;
+            // 
+            // mnSelect
+            // 
+            this.mnSelect.Location = new System.Drawing.Point(141, 453);
+            this.mnSelect.Name = "mnSelect";
+            this.mnSelect.Size = new System.Drawing.Size(45, 20);
+            this.mnSelect.TabIndex = 29;
+            this.toolTip1.SetToolTip(this.mnSelect, "Minutes");
+            this.mnSelect.Visible = false;
+            this.mnSelect.ValueChanged += new System.EventHandler(this.numericUpDown2_ValueChanged);
+            // 
+            // scSelect
+            // 
+            this.scSelect.Location = new System.Drawing.Point(214, 453);
+            this.scSelect.Name = "scSelect";
+            this.scSelect.Size = new System.Drawing.Size(48, 20);
+            this.scSelect.TabIndex = 30;
+            this.toolTip1.SetToolTip(this.scSelect, "Seconds");
+            this.scSelect.Visible = false;
+            // 
+            // clearAllBtn
+            // 
+            this.clearAllBtn.AccessibleDescription = "Remove selected item";
+            this.clearAllBtn.Location = new System.Drawing.Point(591, 94);
+            this.clearAllBtn.Name = "clearAllBtn";
+            this.clearAllBtn.Size = new System.Drawing.Size(37, 34);
+            this.clearAllBtn.TabIndex = 25;
+            this.clearAllBtn.Text = "XX";
+            this.toolTip1.SetToolTip(this.clearAllBtn, "Delete all clicks");
+            this.clearAllBtn.UseVisualStyleBackColor = true;
+            this.clearAllBtn.Click += new System.EventHandler(this.clearAllBtn_Click);
+            // 
+            // startStopSelect
+            // 
+            this.startStopSelect.FormattingEnabled = true;
+            this.startStopSelect.Location = new System.Drawing.Point(49, 61);
+            this.startStopSelect.Name = "startStopSelect";
+            this.startStopSelect.Size = new System.Drawing.Size(133, 21);
+            this.startStopSelect.TabIndex = 37;
+            this.toolTip1.SetToolTip(this.startStopSelect, "Change the Start / Stop button to whatever you want");
+            this.startStopSelect.SelectedIndexChanged += new System.EventHandler(this.startStopSelect_SelectedIndexChanged);
+            // 
+            // customRecordBtn
+            // 
+            this.customRecordBtn.FormattingEnabled = true;
+            this.customRecordBtn.Location = new System.Drawing.Point(48, 101);
+            this.customRecordBtn.Name = "customRecordBtn";
+            this.customRecordBtn.Size = new System.Drawing.Size(133, 21);
+            this.customRecordBtn.TabIndex = 39;
+            this.toolTip1.SetToolTip(this.customRecordBtn, "Specify a custom button that will start / stop mouse recording");
+            this.customRecordBtn.SelectedIndexChanged += new System.EventHandler(this.customRecordBtn_SelectedIndexChanged);
+            // 
             // beginMouseRecording
             // 
             this.beginMouseRecording.BackColor = System.Drawing.Color.Plum;
@@ -254,6 +329,7 @@
             this.beginMouseRecording.Size = new System.Drawing.Size(194, 29);
             this.beginMouseRecording.TabIndex = 15;
             this.beginMouseRecording.Text = "Record Mouse (F7)";
+            this.toolTip2.SetToolTip(this.beginMouseRecording, "Start / Stop mouse recording");
             this.beginMouseRecording.UseVisualStyleBackColor = false;
             this.beginMouseRecording.Click += new System.EventHandler(this.beginMouseRecording_Click);
             // 
@@ -308,17 +384,6 @@
             this.label4.Text = "Repeat Loop:";
             this.repeatTT.SetToolTip(this.label4, "Repeat loop modifiers");
             // 
-            // clearAllBtn
-            // 
-            this.clearAllBtn.AccessibleDescription = "Remove selected item";
-            this.clearAllBtn.Location = new System.Drawing.Point(591, 94);
-            this.clearAllBtn.Name = "clearAllBtn";
-            this.clearAllBtn.Size = new System.Drawing.Size(37, 34);
-            this.clearAllBtn.TabIndex = 25;
-            this.clearAllBtn.Text = "XX";
-            this.clearAllBtn.UseVisualStyleBackColor = true;
-            this.clearAllBtn.Click += new System.EventHandler(this.clearAllBtn_Click);
-            // 
             // repeatSelection
             // 
             this.repeatSelection.AutoSize = true;
@@ -336,33 +401,8 @@
             this.repeatCount.Name = "repeatCount";
             this.repeatCount.Size = new System.Drawing.Size(119, 20);
             this.repeatCount.TabIndex = 27;
-            this.repeatCountTT.SetToolTip(this.repeatCount, "Repeat loop this many times");
+            this.repeatCountTT.SetToolTip(this.repeatCount, "Click this many times");
             this.repeatCount.Visible = false;
-            // 
-            // hrSelect
-            // 
-            this.hrSelect.Location = new System.Drawing.Point(69, 453);
-            this.hrSelect.Name = "hrSelect";
-            this.hrSelect.Size = new System.Drawing.Size(44, 20);
-            this.hrSelect.TabIndex = 28;
-            this.hrSelect.Visible = false;
-            // 
-            // mnSelect
-            // 
-            this.mnSelect.Location = new System.Drawing.Point(141, 453);
-            this.mnSelect.Name = "mnSelect";
-            this.mnSelect.Size = new System.Drawing.Size(45, 20);
-            this.mnSelect.TabIndex = 29;
-            this.mnSelect.Visible = false;
-            this.mnSelect.ValueChanged += new System.EventHandler(this.numericUpDown2_ValueChanged);
-            // 
-            // scSelect
-            // 
-            this.scSelect.Location = new System.Drawing.Point(214, 453);
-            this.scSelect.Name = "scSelect";
-            this.scSelect.Size = new System.Drawing.Size(48, 20);
-            this.scSelect.TabIndex = 30;
-            this.scSelect.Visible = false;
             // 
             // hrLbl
             // 
@@ -404,6 +444,7 @@
             this.startStopBtn.Size = new System.Drawing.Size(213, 36);
             this.startStopBtn.TabIndex = 34;
             this.startStopBtn.Text = "Start (F6)";
+            this.repeatTT.SetToolTip(this.startStopBtn, "Start / Stop clicks");
             this.startStopBtn.UseVisualStyleBackColor = false;
             this.startStopBtn.Click += new System.EventHandler(this.startStopBtn_Click);
             // 
@@ -416,24 +457,6 @@
             this.label6.Size = new System.Drawing.Size(137, 13);
             this.label6.TabIndex = 36;
             this.label6.Text = "Custom Start / Stop Button:";
-            // 
-            // startStopSelect
-            // 
-            this.startStopSelect.FormattingEnabled = true;
-            this.startStopSelect.Location = new System.Drawing.Point(49, 61);
-            this.startStopSelect.Name = "startStopSelect";
-            this.startStopSelect.Size = new System.Drawing.Size(133, 21);
-            this.startStopSelect.TabIndex = 37;
-            this.startStopSelect.SelectedIndexChanged += new System.EventHandler(this.startStopSelect_SelectedIndexChanged);
-            // 
-            // customRecordBtn
-            // 
-            this.customRecordBtn.FormattingEnabled = true;
-            this.customRecordBtn.Location = new System.Drawing.Point(48, 101);
-            this.customRecordBtn.Name = "customRecordBtn";
-            this.customRecordBtn.Size = new System.Drawing.Size(133, 21);
-            this.customRecordBtn.TabIndex = 39;
-            this.customRecordBtn.SelectedIndexChanged += new System.EventHandler(this.customRecordBtn_SelectedIndexChanged);
             // 
             // label2
             // 
@@ -451,7 +474,7 @@
             this.fileToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(768, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(768, 29);
             this.menuStrip1.TabIndex = 41;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -460,21 +483,22 @@
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.saveToolStripMenuItem,
             this.loadToolStripMenuItem});
+            this.fileToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(46, 25);
             this.fileToolStripMenuItem.Text = "File";
             // 
             // saveToolStripMenuItem
             // 
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(100, 22);
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(114, 26);
             this.saveToolStripMenuItem.Text = "Save";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
             // 
             // loadToolStripMenuItem
             // 
             this.loadToolStripMenuItem.Name = "loadToolStripMenuItem";
-            this.loadToolStripMenuItem.Size = new System.Drawing.Size(100, 22);
+            this.loadToolStripMenuItem.Size = new System.Drawing.Size(114, 26);
             this.loadToolStripMenuItem.Text = "Load";
             this.loadToolStripMenuItem.Click += new System.EventHandler(this.loadToolStripMenuItem_Click);
             // 
@@ -485,6 +509,7 @@
             this.globalModifierKey.Name = "globalModifierKey";
             this.globalModifierKey.Size = new System.Drawing.Size(82, 21);
             this.globalModifierKey.TabIndex = 43;
+            this.toolTip2.SetToolTip(this.globalModifierKey, "Global modifier key selection");
             this.globalModifierKey.SelectedIndexChanged += new System.EventHandler(this.globalModifierKey_SelectedIndexChanged);
             // 
             // useGlobalModifier
@@ -495,6 +520,7 @@
             this.useGlobalModifier.Size = new System.Drawing.Size(96, 17);
             this.useGlobalModifier.TabIndex = 44;
             this.useGlobalModifier.Text = "Global Modifier";
+            this.toolTip2.SetToolTip(this.useGlobalModifier, "Enable a global modifier key");
             this.useGlobalModifier.UseVisualStyleBackColor = true;
             this.useGlobalModifier.CheckedChanged += new System.EventHandler(this.useGlobalModifier_CheckedChanged);
             // 
@@ -519,6 +545,7 @@
             // 
             this.Label.Tag = "label";
             this.Label.Text = "Label";
+            this.Label.Width = 90;
             // 
             // X
             // 
@@ -556,6 +583,7 @@
             this.enableRecordBtn.Size = new System.Drawing.Size(146, 17);
             this.enableRecordBtn.TabIndex = 46;
             this.enableRecordBtn.Text = "Enable F7 Record Button";
+            this.toolTip2.SetToolTip(this.enableRecordBtn, "Enable / Disable the record mouse function");
             this.enableRecordBtn.UseVisualStyleBackColor = true;
             this.enableRecordBtn.CheckedChanged += new System.EventHandler(this.enableRecordBtn_CheckedChanged);
             // 
@@ -590,22 +618,12 @@
             this.repeatCountTT.SetToolTip(this.repeatLoopCountLabel, "Repeat loop this many times");
             this.repeatLoopCountLabel.Visible = false;
             // 
-            // globalDelayCheckBox
-            // 
-            this.globalDelayCheckBox.AutoSize = true;
-            this.globalDelayCheckBox.Location = new System.Drawing.Point(48, 224);
-            this.globalDelayCheckBox.Name = "globalDelayCheckBox";
-            this.globalDelayCheckBox.Size = new System.Drawing.Size(86, 17);
-            this.globalDelayCheckBox.TabIndex = 50;
-            this.globalDelayCheckBox.Text = "Global Delay";
-            this.globalDelayCheckBox.UseVisualStyleBackColor = true;
-            this.globalDelayCheckBox.CheckedChanged += new System.EventHandler(this.globalDelayCheckBox_CheckedChanged);
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(768, 601);
+            this.Controls.Add(this.delayPercentModifier);
             this.Controls.Add(this.globalDelayCheckBox);
             this.Controls.Add(this.repeatLoopCount);
             this.Controls.Add(this.repeatLoopCountLabel);
@@ -638,7 +656,6 @@
             this.Controls.Add(this.beginMouseRecording);
             this.Controls.Add(this.positionModifier);
             this.Controls.Add(this.button2);
-            this.Controls.Add(this.delayPercentModifier);
             this.Controls.Add(this.randomizePositions);
             this.Controls.Add(this.randomizeDelays);
             this.Controls.Add(this.addRowBtn);
@@ -651,11 +668,12 @@
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.positionModifier)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.delayPercentModifier)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.globalDelay)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.repeatCount)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.hrSelect)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.mnSelect)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.scSelect)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repeatCount)).EndInit();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.repeatLoopCount)).EndInit();
@@ -672,7 +690,6 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button addRowBtn;
         private System.Windows.Forms.CheckBox randomizeDelays;
-        private System.Windows.Forms.ComboBox delayPercentModifier;
         private System.Windows.Forms.CheckBox randomizePositions;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.NumericUpDown positionModifier;
@@ -724,6 +741,7 @@
         private System.Windows.Forms.NumericUpDown repeatLoopCount;
         private System.Windows.Forms.Label repeatLoopCountLabel;
         private System.Windows.Forms.CheckBox globalDelayCheckBox;
+        private System.Windows.Forms.NumericUpDown delayPercentModifier;
     }
 }
 

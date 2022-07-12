@@ -121,6 +121,8 @@ namespace ClickMe
                 }
             }
 
+            bool overrideGlobalDly = overrideGlobalDelay.Checked;
+
             if (String.IsNullOrEmpty(positionLabel.Text))
             {
                 popupWarning.Text = "Please set a unique label";
@@ -142,7 +144,7 @@ namespace ClickMe
             if (currPos == null)
             {
                 mp = new MousePosition(label, (int)xP, (int)yP, (int)delay,
-                    rightClick.Checked, doubleClick.Checked, keyModifier, null, useModifier);
+                    rightClick.Checked, doubleClick.Checked, keyModifier, null, useModifier, overrideGlobalDly);
             }
             
             var exists = PositionHelper.positions.Any(x => x.id == mp.id);
@@ -155,7 +157,7 @@ namespace ClickMe
                     useModifier = true;
                 }
                 PositionHelper.updateItem(mp, label, (int)xP, (int)yP, (int)delay, rightClick.Checked, 
-                    doubleClick.Checked, keyModifier, null, useModifier);
+                    doubleClick.Checked, keyModifier, null, useModifier, true, overrideGlobalDly);
                 this.Close();
                 return;
             }

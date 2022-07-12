@@ -31,7 +31,7 @@ namespace ClickMe
 
         public static void updateItem(MousePosition pos, String label, int x, int y, int delay,
             bool isRightClick, bool isDoubleClick, VirtualKeyCode? modifier = null,
-            Key? keyModifier = null, bool useModifier = false, bool isUpdate = false)
+            Key? keyModifier = null, bool useModifier = false, bool isUpdate = false, bool overrideGlobalDelay = false)
         {
             var cur = positions.FirstOrDefault(x => x.id == pos.id);
             if (cur != null)
@@ -44,6 +44,7 @@ namespace ClickMe
                 cur.isRightClick = isRightClick;
                 cur.modifier = modifier ?? null;
                 cur.useModifier = useModifier;
+                cur.overrideGlobalDelay = overrideGlobalDelay;
             }
         }
     }
