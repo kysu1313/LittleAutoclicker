@@ -83,6 +83,7 @@ namespace ClickMe
             customRecordBtn.SelectedItem = Key.F7;
             positionList.DoubleClick += PositionList_DoubleClick;
             positionList.HeaderStyle = ColumnHeaderStyle.Nonclickable;
+            positionList.FullRowSelect = true;
             CheckForIllegalCrossThreadCalls = false;
             beginMouseRecording.Text = recordBtnOffTxt;
             Thread AC = new Thread(AutoClick);
@@ -90,6 +91,11 @@ namespace ClickMe
             AC.Start();
         }
 
+        /// <summary>
+        /// Double click list item to edit it in the position popup
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void PositionList_DoubleClick(object sender, EventArgs e)
         {
             var row = positionList.SelectedItems[0].Tag;
@@ -127,15 +133,18 @@ namespace ClickMe
             }
             else
             {
+                if (testMode.Checked && !click)
+                {
+                    keyTest();
+                    return;
+                }
                 if (globalModifierEnabled && !isModalOpen)
                 {
                     triggerGlobalModifier(false);
                 }
-                if (click)
-                {
-                    loopCount = 0;
-                    clickCount = 0;
-                }
+
+                loopCount = 0;
+                clickCount = 0;
                 click = !click;
                 if (clickTimer.IsRunning)
                 {
@@ -207,7 +216,7 @@ namespace ClickMe
         private bool checkValidClickCount()
         {
             int maxClicks = Decimal.ToInt32(repeatCount.Value);
-            if (clickCount > maxClicks)
+            if (clickCount >= maxClicks)
             {
                 click = !click;
                 updateBtnColorAndText();
@@ -283,8 +292,20 @@ namespace ClickMe
         // Reset clicked button when it is released
         void keyUpEvent(object sender, RawKeyEventArgs args)
         {
-            //Console.WriteLine("Key up: " + args.Key.ToString());
             currentKeyPressed = null;
+        }
+
+        private void keyTest()
+        {
+            Process p = Process.GetProcessesByName("DreamBot 3.12.0 - Sn3akySnak33").FirstOrDefault();
+            var pp = Process.GetProcesses();
+
+            if (p != null)
+            {
+                IntPtr h = p.MainWindowHandle;
+                MouseHelper.SetForegroundWindow(h);
+                SendKeys.SendWait("F6");
+            }
         }
 
         /// <summary>
@@ -307,9 +328,10 @@ namespace ClickMe
 
             if (mousePosition.useModifier && code != null)
             {
-                MouseHelper.SendKeyCommand((KeyCode)code, MouseHelper.KEYEVENT_KEYDOWN);
+                //MouseHelper.SendKeyCommand((KeyCode)code, MouseHelper.KEYEVENT_KEYDOWN);
                 Console.WriteLine("pressed " + code);
                 //inputSimulator.Keyboard.KeyDown(VirtualKeyCode.SHIFT);
+                KeyboardClicker.KeyDownAction(Keys.Shift);
                 //Thread.Sleep(1);
             }
 
@@ -338,9 +360,10 @@ namespace ClickMe
 
             if (mousePosition.useModifier && code != null)
             {
-                MouseHelper.SendKeyCommand((KeyCode)code, MouseHelper.KEYEVENT_KEYUP);
+                //MouseHelper.SendKeyCommand((KeyCode)code, MouseHelper.KEYEVENT_KEYUP);
                 //MouseHelper.SendKeyCommand((KeyCode)virtualKeyToKeyCode(mousePosition.modifier), MouseHelper.KEYEVENT_KEYUP);
                 //inputSimulator.Keyboard.KeyUp(VirtualKeyCode.SHIFT);
+                KeyboardClicker.KeyUpAction(Keys.Shift);
             }
 
             ++currIndex;
@@ -775,5 +798,13 @@ namespace ClickMe
         private void mh_MouseUpEvent(object sender, MouseEventArgs e) { }
         private void numericUpDown2_ValueChanged(object sender, EventArgs e) { }
         private void delayPercentModifier_SelectedIndexChanged(object sender, EventArgs e) { }
+
+        private void testMode_CheckedChanged(object sender, EventArgs e)
+        {
+            BindingList<ProcessData> bindingObjs = FormHelper.getProcessBindingObjects();
+            processList.DataSource = bindingObjs;
+            processList.DisplayMember = "WindowTitle";
+            processList.DropDownWidth = 300; // FormHelper.DropDownWidth(processList);
+        }
     }
 }

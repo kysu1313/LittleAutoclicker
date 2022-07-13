@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Input;
 using static ClickMe.KeyCodes;
 
 namespace ClickMe
@@ -53,7 +54,8 @@ namespace ClickMe
 
         [DllImport("user32.dll")]
         public static extern int GetKeyboardState(byte[] keystate);
-
+        [DllImport("User32.dll")]
+        public static extern int SetForegroundWindow(IntPtr point);
 
         private void detectKeyDown(Keys key)
         {
@@ -149,4 +151,37 @@ namespace ClickMe
         //    SetCursorPosition(newPosition);
         //}
     }
+    public static class KeyboardClicker
+    {
+        public static void Press(Keys keys, int sleep = 1)
+        {
+            var keyValue = (byte)keys;
+
+            NativeMethods.keybd_event(keyValue, 0, 0, UIntPtr.Zero); //key down
+
+            Thread.Sleep(sleep);
+
+            NativeMethods.keybd_event(keyValue, 0, 0x02, UIntPtr.Zero); //key up
+        }
+
+        public static void KeyDownAction(Keys keys)
+        {
+            var keyValue = (byte)keys;
+            NativeMethods.keybd_event(keyValue, 0, 0, UIntPtr.Zero); //key down
+        }
+
+        public static void KeyUpAction(Keys keys)
+        {
+            var keyValue = (byte)keys;
+            NativeMethods.keybd_event(keyValue, 0, 0x02, UIntPtr.Zero); //key up
+        }
+
+    }
+
+    internal static partial class NativeMethods
+    {
+        [DllImport("user32.dll")]
+        internal static extern void keybd_event(byte bVk, byte bScan, int dwFlags, UIntPtr dwExtraInfo);
+    }
+
 }

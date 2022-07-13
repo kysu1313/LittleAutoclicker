@@ -87,6 +87,9 @@
             this.repeatCountTT = new System.Windows.Forms.ToolTip(this.components);
             this.repeatLoopCount = new System.Windows.Forms.NumericUpDown();
             this.repeatLoopCountLabel = new System.Windows.Forms.Label();
+            this.testMode = new System.Windows.Forms.CheckBox();
+            this.processList = new System.Windows.Forms.ComboBox();
+            this.Process = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             ((System.ComponentModel.ISupportInitialize)(this.positionModifier)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.delayPercentModifier)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.globalDelay)).BeginInit();
@@ -241,7 +244,7 @@
             "For number of loops",
             "For number of clicks",
             "Until specified time"});
-            this.repeatFor.Location = new System.Drawing.Point(123, 375);
+            this.repeatFor.Location = new System.Drawing.Point(123, 348);
             this.repeatFor.Name = "repeatFor";
             this.repeatFor.Size = new System.Drawing.Size(119, 21);
             this.repeatFor.TabIndex = 24;
@@ -262,7 +265,7 @@
             // 
             // hrSelect
             // 
-            this.hrSelect.Location = new System.Drawing.Point(69, 453);
+            this.hrSelect.Location = new System.Drawing.Point(69, 426);
             this.hrSelect.Name = "hrSelect";
             this.hrSelect.Size = new System.Drawing.Size(44, 20);
             this.hrSelect.TabIndex = 28;
@@ -271,7 +274,7 @@
             // 
             // mnSelect
             // 
-            this.mnSelect.Location = new System.Drawing.Point(141, 453);
+            this.mnSelect.Location = new System.Drawing.Point(141, 426);
             this.mnSelect.Name = "mnSelect";
             this.mnSelect.Size = new System.Drawing.Size(45, 20);
             this.mnSelect.TabIndex = 29;
@@ -281,7 +284,7 @@
             // 
             // scSelect
             // 
-            this.scSelect.Location = new System.Drawing.Point(214, 453);
+            this.scSelect.Location = new System.Drawing.Point(214, 426);
             this.scSelect.Name = "scSelect";
             this.scSelect.Size = new System.Drawing.Size(48, 20);
             this.scSelect.TabIndex = 30;
@@ -377,7 +380,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(45, 378);
+            this.label4.Location = new System.Drawing.Point(45, 351);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(72, 13);
             this.label4.TabIndex = 23;
@@ -387,7 +390,7 @@
             // repeatSelection
             // 
             this.repeatSelection.AutoSize = true;
-            this.repeatSelection.Location = new System.Drawing.Point(47, 429);
+            this.repeatSelection.Location = new System.Drawing.Point(47, 402);
             this.repeatSelection.Name = "repeatSelection";
             this.repeatSelection.Size = new System.Drawing.Size(35, 13);
             this.repeatSelection.TabIndex = 26;
@@ -397,7 +400,7 @@
             // 
             // repeatCount
             // 
-            this.repeatCount.Location = new System.Drawing.Point(125, 427);
+            this.repeatCount.Location = new System.Drawing.Point(125, 400);
             this.repeatCount.Name = "repeatCount";
             this.repeatCount.Size = new System.Drawing.Size(119, 20);
             this.repeatCount.TabIndex = 27;
@@ -407,7 +410,7 @@
             // hrLbl
             // 
             this.hrLbl.AutoSize = true;
-            this.hrLbl.Location = new System.Drawing.Point(47, 455);
+            this.hrLbl.Location = new System.Drawing.Point(47, 428);
             this.hrLbl.Name = "hrLbl";
             this.hrLbl.Size = new System.Drawing.Size(18, 13);
             this.hrLbl.TabIndex = 31;
@@ -417,7 +420,7 @@
             // mnLbl
             // 
             this.mnLbl.AutoSize = true;
-            this.mnLbl.Location = new System.Drawing.Point(119, 455);
+            this.mnLbl.Location = new System.Drawing.Point(119, 428);
             this.mnLbl.Name = "mnLbl";
             this.mnLbl.Size = new System.Drawing.Size(19, 13);
             this.mnLbl.TabIndex = 32;
@@ -427,7 +430,7 @@
             // scLbl
             // 
             this.scLbl.AutoSize = true;
-            this.scLbl.Location = new System.Drawing.Point(192, 455);
+            this.scLbl.Location = new System.Drawing.Point(192, 428);
             this.scLbl.Name = "scLbl";
             this.scLbl.Size = new System.Drawing.Size(17, 13);
             this.scLbl.TabIndex = 33;
@@ -474,7 +477,7 @@
             this.fileToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(768, 29);
+            this.menuStrip1.Size = new System.Drawing.Size(862, 29);
             this.menuStrip1.TabIndex = 41;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -532,11 +535,12 @@
             this.Y,
             this.Delay,
             this.Type,
-            this.Mod});
+            this.Mod,
+            this.Process});
             this.positionList.HideSelection = false;
             this.positionList.Location = new System.Drawing.Point(290, 134);
             this.positionList.Name = "positionList";
-            this.positionList.Size = new System.Drawing.Size(440, 429);
+            this.positionList.Size = new System.Drawing.Size(530, 429);
             this.positionList.TabIndex = 45;
             this.positionList.UseCompatibleStateImageBehavior = false;
             this.positionList.View = System.Windows.Forms.View.Details;
@@ -600,7 +604,7 @@
             // 
             // repeatLoopCount
             // 
-            this.repeatLoopCount.Location = new System.Drawing.Point(125, 402);
+            this.repeatLoopCount.Location = new System.Drawing.Point(125, 375);
             this.repeatLoopCount.Name = "repeatLoopCount";
             this.repeatLoopCount.Size = new System.Drawing.Size(119, 20);
             this.repeatLoopCount.TabIndex = 49;
@@ -610,7 +614,7 @@
             // repeatLoopCountLabel
             // 
             this.repeatLoopCountLabel.AutoSize = true;
-            this.repeatLoopCountLabel.Location = new System.Drawing.Point(47, 404);
+            this.repeatLoopCountLabel.Location = new System.Drawing.Point(47, 377);
             this.repeatLoopCountLabel.Name = "repeatLoopCountLabel";
             this.repeatLoopCountLabel.Size = new System.Drawing.Size(36, 13);
             this.repeatLoopCountLabel.TabIndex = 48;
@@ -618,11 +622,40 @@
             this.repeatCountTT.SetToolTip(this.repeatLoopCountLabel, "Repeat loop this many times");
             this.repeatLoopCountLabel.Visible = false;
             // 
+            // testMode
+            // 
+            this.testMode.AutoSize = true;
+            this.testMode.Location = new System.Drawing.Point(50, 479);
+            this.testMode.Name = "testMode";
+            this.testMode.Size = new System.Drawing.Size(77, 17);
+            this.testMode.TabIndex = 52;
+            this.testMode.Text = "Test Mode";
+            this.testMode.UseVisualStyleBackColor = true;
+            this.testMode.CheckedChanged += new System.EventHandler(this.testMode_CheckedChanged);
+            // 
+            // processList
+            // 
+            this.processList.DisplayMember = "null";
+            this.processList.FormattingEnabled = true;
+            this.processList.Location = new System.Drawing.Point(134, 479);
+            this.processList.Name = "processList";
+            this.processList.Size = new System.Drawing.Size(121, 21);
+            this.processList.TabIndex = 53;
+            this.processList.ValueMember = "null";
+            // 
+            // Process
+            // 
+            this.Process.Text = "Process";
+            this.Process.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.Process.Width = 100;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(768, 601);
+            this.ClientSize = new System.Drawing.Size(862, 601);
+            this.Controls.Add(this.processList);
+            this.Controls.Add(this.testMode);
             this.Controls.Add(this.delayPercentModifier);
             this.Controls.Add(this.globalDelayCheckBox);
             this.Controls.Add(this.repeatLoopCount);
@@ -742,6 +775,9 @@
         private System.Windows.Forms.Label repeatLoopCountLabel;
         private System.Windows.Forms.CheckBox globalDelayCheckBox;
         private System.Windows.Forms.NumericUpDown delayPercentModifier;
+        private System.Windows.Forms.CheckBox testMode;
+        private System.Windows.Forms.ComboBox processList;
+        private System.Windows.Forms.ColumnHeader Process;
     }
 }
 

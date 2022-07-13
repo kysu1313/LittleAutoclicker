@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -61,6 +63,37 @@ namespace ClickMe
                 return (x + rx, y + ry);
             }
             return (x, y);
+        }
+
+        public static BindingList<ProcessData> getProcessBindingObjects()
+        {
+            var pcs = Process.GetProcesses();
+
+            var procs = pcs.Where(x => !string.IsNullOrEmpty(x.MainWindowTitle))
+                .Select(x => new ProcessData
+                {
+                    ProcessName = x.ProcessName,
+                    WindowTitle = x.MainWindowTitle,
+                    ID = x.Id,
+                    Value = x
+                }).ToArray();
+
+            var bindingObjs = new BindingList<ProcessData>(procs);
+            return bindingObjs;
+        }
+
+        public static int DropDownWidth(ComboBox myCombo)
+        {
+            int maxWidth = 0, temp = 0;
+            foreach (var obj in myCombo.Items)
+            {
+                temp = TextRenderer.MeasureText(obj.ToString(), myCombo.Font).Width;
+                if (temp > maxWidth)
+                {
+                    maxWidth = temp;
+                }
+            }
+            return maxWidth;
         }
 
         public static byte[] ObjectArrayToByteArray<T>(List<T> positions)

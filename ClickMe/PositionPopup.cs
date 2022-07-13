@@ -25,15 +25,13 @@ namespace ClickMe
 
         public PositionPopup(int globalDelay)
         {
-            InitializeComponent();
-            clickModifier.DataSource = Enum.GetValues(typeof(Key));
+            init();
             this.globalDelay = globalDelay;
         }
 
         public PositionPopup(MousePosition position)
         {
-            InitializeComponent();
-            clickModifier.DataSource = Enum.GetValues(typeof(Key));
+            init();
             this.xP = position.x;
             this.yP = position.y;
             this.label = position.label;
@@ -47,6 +45,17 @@ namespace ClickMe
             rightClick.Checked = position.isRightClick;
             doubleClick.Checked = position.isDoubleClick;
             currPos = position;
+        }
+
+        private void init()
+        {
+            InitializeComponent();
+            clickModifier.DataSource = Enum.GetValues(typeof(Key));
+            BindingList<ProcessData> bindingObjs = FormHelper.getProcessBindingObjects();
+            popupProcessList.DataSource = bindingObjs;
+            popupProcessList.DisplayMember = "WindowTitle";
+            popupProcessList.DropDownWidth = 300; // FormHelper.DropDownWidth(processList);
+
         }
 
         private void PositionPopup_Load(object sender, EventArgs e)
@@ -140,11 +149,18 @@ namespace ClickMe
                 useModifier = res.Item2;
             }
 
+            ProcessData process = null;
+            if (sendToProcess.Checked && popupProcessList.SelectedItem != null)
+            {
+                process = (ProcessData)popupProcessList.SelectedItem;
+            }
+
             MousePosition mp = currPos;
             if (currPos == null)
             {
                 mp = new MousePosition(label, (int)xP, (int)yP, (int)delay,
-                    rightClick.Checked, doubleClick.Checked, keyModifier, null, useModifier, overrideGlobalDly);
+                    rightClick.Checked, doubleClick.Checked, keyModifier, null,
+                    useModifier, overrideGlobalDly, process: process);
             }
             
             var exists = PositionHelper.positions.Any(x => x.id == mp.id);
@@ -157,7 +173,7 @@ namespace ClickMe
                     useModifier = true;
                 }
                 PositionHelper.updateItem(mp, label, (int)xP, (int)yP, (int)delay, rightClick.Checked, 
-                    doubleClick.Checked, keyModifier, null, useModifier, true, overrideGlobalDly);
+                    doubleClick.Checked, keyModifier, null, useModifier, true, overrideGlobalDly, process);
                 this.Close();
                 return;
             }
@@ -176,5 +192,10 @@ namespace ClickMe
             "Ctrl"      => (VirtualKeyCode.CONTROL, true),
             _           => (null, false),
         };
+
+        private void popupProcessList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

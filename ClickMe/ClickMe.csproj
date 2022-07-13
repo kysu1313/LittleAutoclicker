@@ -78,6 +78,7 @@
     <Compile Include="PositionPopup.Designer.cs">
       <DependentUpon>PositionPopup.cs</DependentUpon>
     </Compile>
+    <Compile Include="ProcessData.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Win32Api.cs" />
