@@ -42,7 +42,9 @@
   <ItemGroup>
     <Reference Include="PresentationCore" />
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Numerics" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -65,6 +67,14 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="FormHelper.cs" />
+    <Compile Include="KeyboardFunctions\ActiveWindowChangedEventArgs.cs" />
+    <Compile Include="KeyboardFunctions\ActiveWindowModel.cs" />
+    <Compile Include="KeyboardFunctions\ActiveWindowWatcher.cs" />
+    <Compile Include="KeyboardFunctions\Key.cs" />
+    <Compile Include="KeyboardFunctions\Messaging.cs" />
+    <Compile Include="KeyboardFunctions\Option.cs" />
+    <Compile Include="KeyboardFunctions\SetKey.cs" />
+    <Compile Include="KeyboardFunctions\WindowAPI.cs" />
     <Compile Include="KeyboardListener.cs" />
     <Compile Include="KeyCodes.cs" />
     <Compile Include="MouseHelper.cs" />
@@ -79,6 +89,7 @@
       <DependentUpon>PositionPopup.cs</DependentUpon>
     </Compile>
     <Compile Include="ProcessData.cs" />
+    <Compile Include="ProcessHelper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Win32Api.cs" />

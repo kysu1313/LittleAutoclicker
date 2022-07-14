@@ -51,34 +51,3 @@ namespace ClickMe
         }
     }
 }
-
-
-//ColumnHeader columnHeader1 = new ColumnHeader();
-//columnHeader1.Text = "Label";
-//columnHeader1.TextAlign = HorizontalAlignment.Left;
-//columnHeader1.Width = 146;
-
-//ColumnHeader columnHeader2 = new ColumnHeader();
-//columnHeader2.Text = "X";
-//columnHeader2.TextAlign = HorizontalAlignment.Center;
-//columnHeader2.Width = 50;
-
-//ColumnHeader columnHeader3 = new ColumnHeader();
-//columnHeader2.Text = "Y";
-//columnHeader2.TextAlign = HorizontalAlignment.Center;
-//columnHeader2.Width = 50;
-
-//ColumnHeader columnHeader4 = new ColumnHeader();
-//columnHeader2.Text = "Delay";
-//columnHeader2.TextAlign = HorizontalAlignment.Center;
-//columnHeader2.Width = 50;
-
-//ColumnHeader columnHeader5 = new ColumnHeader();
-//columnHeader2.Text = "Type";
-//columnHeader2.TextAlign = HorizontalAlignment.Center;
-//columnHeader2.Width = 50;
-
-//ColumnHeader columnHeader6 = new ColumnHeader();
-//columnHeader2.Text = "Mod";
-//columnHeader2.TextAlign = HorizontalAlignment.Center;
-//columnHeader2.Width = 150;

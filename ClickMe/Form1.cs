@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ClickMe.KeyboardFunctions;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -18,6 +19,7 @@ using WindowsInput;
 using WindowsInput.Native;
 using static ClickMe.KeyCodes;
 using MouseEventArgs = System.Windows.Forms.MouseEventArgs;
+using Key = System.Windows.Input.Key;
 
 namespace ClickMe
 {
@@ -62,6 +64,9 @@ namespace ClickMe
         private string recordBtnOffTxt = "Record Mouse (F7)";
         private string recordBtnOnTxt = "Stop Recording (F7)";
         private int lastElapsedTime = 0;
+
+        private ProcessData globalProcessData;
+        private Process globalProcess;
 
         public Form1()
         {
@@ -297,15 +302,17 @@ namespace ClickMe
 
         private void keyTest()
         {
-            Process p = Process.GetProcessesByName("DreamBot 3.12.0 - Sn3akySnak33").FirstOrDefault();
-            var pp = Process.GetProcesses();
 
-            if (p != null)
-            {
-                IntPtr h = p.MainWindowHandle;
-                MouseHelper.SetForegroundWindow(h);
-                SendKeys.SendWait("F6");
-            }
+            var title = WindowAPI.GetActiveWindowTitle();
+
+
+            WindowAPI.SendKeys(globalProcess.MainWindowHandle, "a");
+
+            //ProcessHelper.SetApp(globalProcess);
+            //ProcessHelper.SendWaitKey("a");
+
+
+            var a = "";
         }
 
         /// <summary>
@@ -542,6 +549,13 @@ namespace ClickMe
             {
                 return; 
             }
+
+
+            // TEST
+            var title = WindowAPI.GetActiveWindowTitle();
+            var tmp = title.ToString();
+            Console.WriteLine("window: " + tmp);
+
 
             int x = e.Location.X;
             int y = e.Location.Y;
@@ -805,6 +819,15 @@ namespace ClickMe
             processList.DataSource = bindingObjs;
             processList.DisplayMember = "WindowTitle";
             processList.DropDownWidth = 300; // FormHelper.DropDownWidth(processList);
+        }
+
+        private void processList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (processList.SelectedIndex < 0)  return;
+            var process = processList.SelectedItem as ProcessData;
+            if (process == null) return;
+            globalProcessData = process;
+            globalProcess = process.Value;
         }
     }
 }

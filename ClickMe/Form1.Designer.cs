@@ -79,6 +79,7 @@
             this.Delay = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Type = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Mod = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.Process = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.enableRecordBtn = new System.Windows.Forms.CheckBox();
             this.randomizeOrder = new System.Windows.Forms.CheckBox();
             this.randomizeOrderTT = new System.Windows.Forms.ToolTip(this.components);
@@ -89,7 +90,6 @@
             this.repeatLoopCountLabel = new System.Windows.Forms.Label();
             this.testMode = new System.Windows.Forms.CheckBox();
             this.processList = new System.Windows.Forms.ComboBox();
-            this.Process = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             ((System.ComponentModel.ISupportInitialize)(this.positionModifier)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.delayPercentModifier)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.globalDelay)).BeginInit();
@@ -577,6 +577,12 @@
             this.Mod.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.Mod.Width = 87;
             // 
+            // Process
+            // 
+            this.Process.Text = "Process";
+            this.Process.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.Process.Width = 100;
+            // 
             // enableRecordBtn
             // 
             this.enableRecordBtn.AutoSize = true;
@@ -642,12 +648,7 @@
             this.processList.Size = new System.Drawing.Size(121, 21);
             this.processList.TabIndex = 53;
             this.processList.ValueMember = "null";
-            // 
-            // Process
-            // 
-            this.Process.Text = "Process";
-            this.Process.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.Process.Width = 100;
+            this.processList.SelectedIndexChanged += new System.EventHandler(this.processList_SelectedIndexChanged);
             // 
             // Form1
             // 

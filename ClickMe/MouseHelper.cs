@@ -54,8 +54,6 @@ namespace ClickMe
 
         [DllImport("user32.dll")]
         public static extern int GetKeyboardState(byte[] keystate);
-        [DllImport("User32.dll")]
-        public static extern int SetForegroundWindow(IntPtr point);
 
         private void detectKeyDown(Keys key)
         {
