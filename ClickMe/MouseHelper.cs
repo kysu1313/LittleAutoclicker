@@ -1,5 +1,7 @@
-﻿using System;
+﻿using ClickMe.KeyboardFunctions;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -151,6 +153,13 @@ namespace ClickMe
     }
     public static class KeyboardClicker
     {
+
+        public const int KEYEVENTF_EXTENDEDKEY = 0x0001; //Key down flag 
+        public const int KEYEVENTF_KEYUP = 0x0002; //Key up flag 
+        public const int VK_RMENU = 0xA5;
+
+        private static bool holdingKey = false;
+
         public static void Press(Keys keys, int sleep = 1)
         {
             var keyValue = (byte)keys;
@@ -174,6 +183,70 @@ namespace ClickMe
             NativeMethods.keybd_event(keyValue, 0, 0x02, UIntPtr.Zero); //key up
         }
 
+        public static void StopKeyHold()
+        {
+            holdingKey = false;
+        }
+
+        public static void HoldKeyAction(Keys key)
+        {
+            var keyValue = (byte)key;
+            holdingKey = true;
+
+            while (holdingKey)
+            {
+                NativeMethods.keybd_event(keyValue, 0, 0, UIntPtr.Zero);
+                Thread.Sleep(1);
+            }
+
+            NativeMethods.keybd_event(keyValue, 0, 0x02, UIntPtr.Zero); //key up
+        }
+
+    }
+
+    public class KeyHoldThread
+    {
+
+        private bool holdKey;
+        private Keys key;
+        private byte keyByte;
+        private IntPtr processWindow;
+
+        public KeyHoldThread(Keys key, IntPtr processWindow)
+        {
+            this.holdKey = true;
+            this.key = key;
+            this.keyByte = (byte)key;
+            this.processWindow = processWindow;
+        }
+
+        public void ReleaseKeyPress()
+        {
+            holdKey = false;
+        }
+
+        public void Run()
+        {
+            while (true)
+            {
+                if (holdKey)
+                {
+                    //NativeMethods.keybd_event(keyByte, 0, 0, UIntPtr.Zero);
+                    //KeyboardClicker.KeyDownAction(Keys.Shift);
+                    WindowAPI.SendKeys(processWindow, "{SHIFT}");
+                    Console.WriteLine("holding key ");
+                }
+                else
+                {
+                    //NativeMethods.keybd_event(keyByte, 0, 0x02, UIntPtr.Zero);
+                    KeyboardClicker.KeyUpAction(Keys.Shift);
+                    Console.WriteLine("released key ");
+                    break;
+                }
+
+                Thread.Sleep(1);
+            }
+        }
     }
 
     internal static partial class NativeMethods

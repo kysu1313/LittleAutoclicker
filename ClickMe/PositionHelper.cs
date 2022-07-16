@@ -8,7 +8,7 @@ using WindowsInput.Native;
 
 namespace ClickMe
 {
-    public class PositionHelper
+    public static class PositionHelper
     {
 
         public static List<MousePosition> positions = new List<MousePosition>();

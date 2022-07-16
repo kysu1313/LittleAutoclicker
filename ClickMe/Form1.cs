@@ -32,7 +32,6 @@ namespace ClickMe
         public int intervals = 500;
         public bool click = false;
         public int parsedValue = 1;
-        public PositionHelper positionHelper = new PositionHelper();
         private InputSimulator inputSimulator;
         private KeyboardListener KListener = new KeyboardListener();
         private MouseHook mouseHook = new MouseHook();
@@ -303,16 +302,28 @@ namespace ClickMe
         private void keyTest()
         {
 
-            var title = WindowAPI.GetActiveWindowTitle();
+            var khold = new KeyHoldThread(Keys.Shift, globalProcess.MainWindowHandle);
+
+            Thread th = new Thread(() => khold.Run());
+            th.Start();
 
 
-            WindowAPI.SendKeys(globalProcess.MainWindowHandle, "a");
+            //WindowAPI.SendKeys(globalProcess.MainWindowHandle, "{SHIFT}");
 
-            //ProcessHelper.SetApp(globalProcess);
-            //ProcessHelper.SendWaitKey("a");
+            WindowAPI.SendKeys(globalProcess.MainWindowHandle, false, false, "a");
+            WindowAPI.SendKeys(globalProcess.MainWindowHandle, false, false, "z");
+
+            khold.ReleaseKeyPress();
+
+            //var title = WindowAPI.GetActiveWindowTitle();
+            //WindowAPI.SendKeys(globalProcess.MainWindowHandle, "asdf");
+            //WindowAPI.SendKeys(globalProcess.MainWindowHandle, "asdf");
 
 
-            var a = "";
+            //KeyboardClicker.KeyDownAction(Keys.Shift);
+            //KeyboardClicker.KeyDownAction(Keys.A);
+            //KeyboardClicker.KeyUpAction(Keys.A);
+            //KeyboardClicker.KeyUpAction(Keys.Shift);
         }
 
         /// <summary>
